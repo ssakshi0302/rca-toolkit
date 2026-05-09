@@ -283,10 +283,10 @@ your-project/
 ## Examples from Temporal Team
 
 **6 RCAs analyzed** (prod incidents):
-- Average TTD: 16.5 hours → Target: 5 minutes (99.5% reduction)
-- Average TTR: 33.7 hours → Target: 2 hours (94% reduction)
-- Time savings: 1,240 hours/year from automation
-- 4 runbook patterns identified
+- 2 recurring patterns identified → runbooks generated
+- 10 missing alerts identified → detection improvements
+- 4 runbook patterns for diagnosis
+- 3 automation candidates for remediation
 
 **Automation opportunities found**:
 - 10 missing alerts (detection)
