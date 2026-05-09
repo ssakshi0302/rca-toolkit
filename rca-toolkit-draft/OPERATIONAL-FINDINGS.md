@@ -32,16 +32,19 @@
 - Delays caused by missing alerting logic, not missing data
 
 **Missing alerts identified** (10 total):
-- DB CPU utilization (>80% sustained)
-- Memory pressure (>70% sustained)
-- OOMKilled events (any occurrence)
-- Queue drain rate (archival, replication)
-- PassthroughCluster traffic (>0 requests)
-- WASM panic errors
-- Recurring alert tracking (>2x same alert in 24h)
-- C2C auth latency (P95 >4.5s)
-- Node join failures (pod pending >5 min)
-- DB CPU by namespace (per-namespace breakdown)
+
+| # | Alert | Threshold/Condition | Category |
+|---|-------|---------------------|----------|
+| 1 | DB CPU utilization | >80% sustained | Database |
+| 2 | Memory pressure | >70% sustained | Resource |
+| 3 | OOMKilled events | Any occurrence | Resource |
+| 4 | Queue drain rate | Archival, replication queues | Capacity |
+| 5 | PassthroughCluster traffic | >0 requests | Service Mesh |
+| 6 | WASM panic errors | Any occurrence | Service Mesh |
+| 7 | Recurring alert tracking | >2x same alert in 24h | Meta-alert |
+| 8 | C2C auth latency | P95 >4.5s | Dependency |
+| 9 | Node join failures | Pod pending >5 min | Infrastructure |
+| 10 | DB CPU by namespace | Per-namespace breakdown | Database |
 
 **Specific examples**:
 - [RCA #1](examples/temporal/rca-analyses/rca-analysis-1.md): 20h TTD - DB CPU 100%, no alert fired
