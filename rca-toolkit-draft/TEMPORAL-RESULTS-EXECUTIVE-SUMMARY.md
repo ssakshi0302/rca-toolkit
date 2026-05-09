@@ -194,13 +194,12 @@
    - PassthroughCluster traffic (>0) - RCA #2
    - WASM panic errors - RCA #5
 2. **Implement recurring alert tracking**: Escalate if same alert fires >2x in 24h (prevent RCA #5 recurrence)
-3. **Test platforms against 6 RCAs**: Score Matrix vs AI Exchange on detection, diagnosis, remediation
-4. **Define PoC success criteria**: Pick 2-3 incident types, set TTD/TTR targets
+3. **Implement CAR prioritization process**: Score and track CARs across RCAs to prevent recurrence
 
 ### Short-Term (60-90 Days)
-1. **PoC**: Build minimal integration (single data source, single incident type)
-2. **Measure**: Compare platform performance vs. historical incidents
-3. **Decide**: Build vs. buy vs. hybrid
+1. **Historical pattern matching**: Integrate RCA corpus for similarity matching
+2. **Automated signal correlation**: Build causation chains across metrics
+3. **Guided remediation workflows**: Auto-suggest fixes with approval gates
 
 ### Long-Term (6+ Months)
 1. **Phase 1**: Detection + diagnosis only (observational mode)
@@ -243,5 +242,3 @@
 3. **Capacity validation gaps** (2/6): RCA #3, #6 - preventable with pre-flight checks
 
 ---
-
-**Next Step**: Use this report to evaluate Matrix and AI Exchange platforms against requirements. Test platforms on RCA #5 and #6 scenarios.

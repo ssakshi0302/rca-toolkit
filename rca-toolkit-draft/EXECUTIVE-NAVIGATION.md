@@ -29,8 +29,8 @@
 **What it contains**:
 - All findings from 1-page summary
 - Detailed incident timelines
-- Platform comparison (Matrix vs AI Exchange)
 - Extended analysis and context
+- Automation capabilities required
 
 **Time**: 10-15 minutes (use if 1-page raises questions)
 
