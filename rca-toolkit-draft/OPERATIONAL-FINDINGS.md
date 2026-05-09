@@ -56,9 +56,10 @@
 ### Diagnosis Patterns
 
 **Manual correlation**:
-- 100% of incidents required correlating 3+ data sources
+- 100% of incidents required correlating multiple metrics across different dashboards (Argus, Grafana), Splunk logs for different services, and DB metrics
 - Time spent: 1-14 hours per incident
-- Systems involved: Argus, Grafana, Splunk, K8s, Mesh dashboards
+- Correlation logic exists in engineers' heads, not in tooling
+- Each incident requires jumping between service dashboards, log systems, DB metrics, K8s events, and mesh dashboards to establish causation
 
 **Recurring workflows**:
 - Namespace workload → DB poll requests → CPU saturation
