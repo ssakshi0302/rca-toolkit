@@ -17,7 +17,8 @@ Thumbs.db
 # Local workspace files
 .claude/
 .agents/
+.specs/
 backups/
 
-# Temporary refinement docs (already committed - will be removed)
+# Temporary refinement docs
 REFINEMENT-COMPLETE.md

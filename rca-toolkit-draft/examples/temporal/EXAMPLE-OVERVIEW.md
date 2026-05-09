@@ -1,11 +1,11 @@
-# Temporal Example - Complete Workflow
+# Temporal Example - Framework Walkthrough
 
-**Purpose**: Show end-to-end RCA analysis workflow with real Temporal incidents
+**Purpose**: End-to-end operational analysis workflow with real Temporal incidents
 
 **What this demonstrates**:
 - **Input**: 6 incident RCAs (Google Docs)
-- **Process**: Batch analysis with rca-analyzer skill
-- **Output**: Individual analyses + batch synthesis + executive report + runbooks
+- **Process**: Batch analysis with rca-analyzer
+- **Output**: Individual analyses + batch synthesis + runbooks + operational findings
 
 ---
 
@@ -36,8 +36,8 @@ examples/temporal/
 │   ├── runbook-capacity-exhaustion.md  # From RCA #6 pattern
 │   └── runbook-wasm-panic.md           # From RCA #5 pattern
 │
-└── Output: Executive Report
-    └── incident-automation-executive-report.md  # ROI, metrics, roadmap
+└── Output: Operational Findings
+    └── ../../OPERATIONAL-FINDINGS.md  # Aggregate findings, operational recommendations
 ```
 
 ---

@@ -1,7 +1,6 @@
-# RCA Toolkit - Quick Start
+# Quick Start Guide
 
-**Time**: 5-10 minutes  
-**Goal**: Identify automation opportunities in your first incident RCA (reduce TTD, TTX, TTR)
+**Goal**: Set up the framework and analyze your first incident RCA
 
 ---
 
@@ -13,12 +12,11 @@
 
 ---
 
-## Step 1: Install Toolkit (2 min)
+## Step 1: Clone Repository
 
 ```bash
-# Clone repository
-git clone git.soma.salesforce.com/orcaas/rca-toolkit.git
-cd rca-toolkit
+git clone git.soma.salesforce.com/orcaas/post-incident-analysis-framework.git
+cd post-incident-analysis-framework
 
 # Verify structure
 ls skills/rca-analyzer/
@@ -27,7 +25,7 @@ ls skills/rca-analyzer/
 
 ---
 
-## Step 2: Create Team Config (3 min)
+## Step 2: Create Team Config
 
 ```bash
 # Copy example config
@@ -48,97 +46,141 @@ services:
   - name: myservice-api
 
 knowledge:
-  metrics_catalog: path/to/your/metrics.md
-  query_patterns: path/to/your/queries.md
+  metrics_catalog: path/to/metrics.md
+  query_patterns: path/to/queries.md
 
 environments:
-  HIGH: [prod]
+  HIGH: [prod, esvc]
   LOW: [dev]
 ```
 
----
-
-## Step 3: Analyze Your First RCA (2 min)
-
-```bash
-# Single RCA
-/rca-analyzer https://docs.google.com/document/d/YOUR_DOC_ID
-```
-
-**Expected output**:
-```
-✅ RCA Analysis Complete
-├─ File: research/past rca/rca-analysis-1.md
-├─ Environment: prod (HIGH priority)
-├─ Service: myservice-api
-├─ Root Cause: database_saturation
-├─ TTD: 2h 15m
-├─ TTR: 4h 30m
-└─ Automation Opportunity: Add DB CPU alert (saves 2h)
-```
+**Optional but recommended**:
+- Service architecture documentation
+- Common failure patterns
+- Alert definitions
 
 ---
 
-## Step 4: Review Analysis (1 min)
+## Step 3: Analyze First RCA
 
 ```bash
-# Open generated file
-cat research/past rca/rca-analysis-1.md
+/rca-analyzer https://docs.google.com/document/d/YOUR_RCA_DOC
 ```
 
-**Contains**:
-- Timeline (TTD/TTX/TTR)
-- Root cause
-- Gaps identified
-- Automation opportunities
-- ROI estimate
+**What it does**:
+- Extracts incident timeline (TTD, TTX, TTR)
+- Identifies missing alerts/metrics
+- Documents diagnosis workflow
+- Suggests runbook opportunities
+- Identifies automation candidates
+
+**Output location**: `.claude/artifacts/rca-analysis-[timestamp].md`
+
+---
+
+## Step 4: Review Output
+
+The analysis will identify:
+
+### Detection Gaps
+- Missing alerts (signal exists, alert missing)
+- Observability blind spots
+- Detection delay breakdown
+
+### Diagnosis Patterns
+- Manual correlation steps
+- Runbook opportunities
+- Knowledge gaps
+
+### Remediation Opportunities
+- Manual processes
+- Approval bottlenecks
+- Automation candidates
+
+### Recurring Patterns
+- Similar to past incidents (if corpus available)
+- Runbook generation trigger (≥2 occurrences)
 
 ---
 
 ## Next Steps
 
+### Single RCA Analysis
+If this is your first analysis, review the output and consider:
+- Which missing alerts should be implemented?
+- What runbook would have helped diagnosis?
+- Is this pattern recurring?
+
 ### Batch Analysis
-Analyze multiple RCAs at once:
+If you have multiple RCAs, analyze in batch:
 ```bash
-/rca-analyzer --batch https://docs.google.com/.../doc1, https://docs.google.com/.../doc2
+/rca-analyzer --batch <url1>, <url2>, <url3>
 ```
 
-### Generate Runbooks
-Add flag to generate runbooks for recurring patterns:
-```bash
-/rca-analyzer --batch <urls> --generate-runbook
+This enables:
+- Pattern detection across incidents (≥2 occurrences)
+- Runbook generation for recurring patterns
+- Aggregate metrics and trends
+- CAR prioritization by recurrence risk
+
+---
+
+## Common Setup Issues
+
+### MCP Access
+**Problem**: "Cannot read Google Doc"  
+**Fix**: Install Google Workspace MCP, grant permissions
+
+### Team Config Not Found
+**Problem**: Skill says "team config missing"  
+**Fix**: Verify `.claude/config/myteam-config.yaml` exists and has required fields
+
+### No Patterns Detected
+**Expected**: Single RCA won't show patterns (need ≥2 similar incidents)  
+**Action**: Run batch analysis on multiple RCAs
+
+---
+
+## Example Output
+
+See `examples/temporal/rca-analyses/` for complete analysis examples from Temporal team (6 RCAs).
+
+**Individual analysis**: `rca-analysis-1.md` through `rca-analysis-6.md`  
+**Batch synthesis**: `batch-synthesis-6-rcas.md`  
+**Generated runbooks**: `../runbooks/`
+
+---
+
+## Customization
+
+### Metrics Catalog
+Document your services' metrics in `knowledge/metrics-catalog.md`:
+```markdown
+## Service Health
+- `api_request_total` (Counter) - Total requests
+- `api_request_errors` (Counter) - Error count
+- `api_request_duration` (Histogram) - Request latency
 ```
 
-**Runbooks generated when**:
-- ≥2 RCAs with same pattern
-- Pattern has clear diagnosis path
+### Query Patterns
+Document common queries in `knowledge/query-patterns.md`:
+```markdown
+## Error Rate Query
+scope=myservice metric=api_request_errors | groupby{service, environment}
+```
 
-### Customize
-- **Templates**: Edit `templates/runbook/*.md` for your patterns
-- **Config**: Add alerts, services, knowledge files
-- **Patterns**: Define custom diagnosis/remediation patterns
-
----
-
-## Troubleshooting
-
-**Issue**: "Team config not found"
-- **Fix**: Create `.claude/config/myteam-config.yaml` (see Step 2)
-
-**Issue**: "Failed to read Google Doc"
-- **Fix**: Check Google Workspace MCP is installed and authenticated
-
-**Issue**: "No patterns found"
-- **Fix**: Analyze ≥2 RCAs with `--batch` for pattern detection
+### Service Architecture
+Document service dependencies in `knowledge/service-architecture.md`:
+```markdown
+## Dependencies
+- Frontend → API → DB
+- Worker → Queue → API
+```
 
 ---
 
-## Getting Help
+## Questions?
 
-- **Documentation**: See `docs/team-onboarding.md` for detailed setup
-- **Runbook Spec**: See `docs/runbook-spec.md` for template format
-- **Examples**: See config examples in `templates/config/`
-
----
-
-**Next**: [Team Onboarding Guide](team-onboarding.md) for advanced configuration
+**Setup issues**: Check `docs/team-onboarding.md` for detailed guide  
+**Framework questions**: Review `README.md`  
+**Temporal examples**: Explore `examples/temporal/`
