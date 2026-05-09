@@ -227,25 +227,6 @@
 
 ---
 
-## ROI Estimate
-
-| Phase | Current Avg | Target | Reduction | Annual Time Saved* |
-|-------|-------------|--------|-----------|-------------------|
-| **Detection (TTD)** | 16.5h | 2h | 92% | ~600 hours |
-| **Diagnosis (TTX)** | 13.3h | 4h | 70% | ~240 hours |
-| **Resolution (TTR)** | 33.7h | 20h | 60% | ~400 hours |
-| **Total** | 63.5h/incident | 26h/incident | **71%** | **~1,240 hours/year** |
-
-**\*Assumes 25 incidents/year** (conservative based on PD alert frequency)
-
-**Business Impact**:
-- Reduced customer impact: Faster detection = shorter outages
-- Reduced oncall burden: Auto-triage + guided remediation
-- Prevented incidents: Pre-flight validation + pattern matching
-- **Cost savings**: 1,240 hours/year @ $200-400/hour = **$264K-529K/year**
-
----
-
 ## Recommendations
 
 **Approve**:
@@ -264,13 +245,56 @@
 
 ---
 
-## Appendix: Data Sources
+## Appendix
+
+### Data Sources
 
 - **RCA Documents**: 6 incidents (DB saturation, mesh issue, archival backlog, Karpenter, capacity exhaustion, WASM panic)
 - **PagerDuty Alerts**: #temporal-notifications (20+ alerts, 3-day sample)
 - **ICC Channels**: #icc-78705213 (100+ messages, 3.5-day incident)
 - **Individual Analyses**: `rca-analyses/rca-analysis-*.md`
 - **Synthesis**: `rca-analyses/batch-synthesis-6-rcas.md`
+
+---
+
+### ICC Channel Analysis (#icc-78705213 - RCA #1)
+
+**Timeline**:
+- Incident opened: July 31, 23:44 UTC (46 hours after symptoms started)
+- Resolution: Aug 3, 09:57 UTC
+- Total duration: ~3.5 days
+
+**Key Delays**:
+- Initial severity assessment: Started as Sev4, upgraded to Sev3 on Aug 2 (30+ hours later)
+- Multi-team coordination: RAR approvals took 24+ hours
+- Pod restarts attempted multiple times before DB upgrade identified
+- Investigation started in #temporal-oncall-discussion, formal ICC not created until 26 hours later
+
+**Communication Pattern**:
+- Status updates every 12-24 hours (not real-time)
+- Repeated manual checks of dashboards, pod status, metrics across team members
+- False positives caused confusion (cluster 2011 vs 2031 alert routing)
+
+**Automation Opportunity**: Auto-triage severity, pre-gather context (dashboards, logs, similar incidents), auto-generate status updates
+
+---
+
+### ROI Estimate
+
+| Phase | Current Avg | Target | Reduction | Annual Time Saved* |
+|-------|-------------|--------|-----------|-------------------|
+| **Detection (TTD)** | 16.5h | 2h | 92% | ~600 hours |
+| **Diagnosis (TTX)** | 13.3h | 4h | 70% | ~240 hours |
+| **Resolution (TTR)** | 33.7h | 20h | 60% | ~400 hours |
+| **Total** | 63.5h/incident | 26h/incident | **71%** | **~1,240 hours/year** |
+
+**\*Assumes 25 incidents/year** (conservative based on PD alert frequency)
+
+**Business Impact**:
+- Reduced customer impact: Faster detection = shorter outages
+- Reduced oncall burden: Auto-triage + guided remediation
+- Prevented incidents: Pre-flight validation + pattern matching
+- **Cost savings**: 1,240 hours/year @ $200-400/hour = **$264K-529K/year**
 
 ---
 

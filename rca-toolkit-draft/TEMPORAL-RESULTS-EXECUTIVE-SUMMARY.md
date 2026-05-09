@@ -147,46 +147,18 @@
 
 ---
 
-## Platform Requirements (Must-Haves)
+## Automation Capabilities Required
 
-### 1. Multi-Layer Observability
-- **Infrastructure**: DB CPU, memory, queue systems, node health
-- **Platform**: K8s pod health (including OOMKills), Karpenter provisioning, mesh routing
-- **Sidecar**: WASM panics, Envoy upstream errors, C2C auth latency
-- **Application**: Service errors, latency, request rates
-- **Why**: 67% of incidents had root causes at lower layers than symptoms (RCA #1, #5, #6)
+**Tier 1 (Critical)**:
+- Multi-layer observability (infra + platform + sidecar + app) - 67% incidents had root causes at lower layers
+- Signal correlation (combine 3+ metrics) - manual correlation took 1-14h per incident
+- Historical pattern matching - RCA #2 identical to Dec 2025 incident
+- Guided remediation with approval workflows - RCA #1 took 4 days for manual quota increase
 
-### 2. Signal Correlation & Causation
-- Combine 3+ metrics automatically (throttle rate + retry rate + queue depth)
-- Show causation chains (infra → service → mesh → errors)
-- Timeline correlation (release started 6 min before errors)
-- **Why**: Manual correlation took 1-14 hours per incident
-
-### 3. Historical Pattern Matching
-- Match current symptoms to past RCA corpus
-- Auto-suggest fixes from similar incidents
-- Prevent recurrence of known patterns
-- **Why**: RCA #2 identical to Dec 2025 incident - could have been prevented
-
-### 4. Pre-Flight Validation
-- Configuration change impact estimation (capacity, quota, load)
-- Gradual rollout capabilities
-- "What-if" simulation before risky operations
-- **Why**: RCA #3 - archival enabled without capacity check caused 3-day outage
-
-### 5. Guided & Automated Remediation
-- **Guided**: Auto-suggest fix with one-click approval (rolling restart, quota increase)
-- **Automated**: Execute known-safe fixes (scale up, restart unhealthy pods)
-- Safety checks: Blast radius limits, rollback, approval workflows
-- **Why**: RCA #1 took 4 days for manual quota increase; RCA #2 could auto-suggest rolling restart
-
-### 6. Smart Alerting & Triage
-- Reduce noise (20+ alerts in 3 days suggests alert fatigue)
-- Prevent alert auto-resolution for recurring issues (RCA #5: 10-day recurrence masked)
-- Track alert recurrence frequency (>2x in 24h = persistent issue)
-- Auto-triage severity (RCA #1 started Sev4, should have been Sev3)
-- Context pre-gathering (relevant metrics, logs, similar incidents)
-- **Why**: 10.3-hour investigation delay in RCA #2 despite alert firing; 10-day recurrence in RCA #5 hidden by auto-resolved alerts
+**Tier 2 (High Priority)**:
+- Pre-flight validation - RCA #3 preventable with capacity check
+- Smart alerting (reduce noise, track recurrence) - 20+ alerts in 3 days, RCA #5 masked by auto-resolution
+- Automated remediation for low-risk actions
 
 ---
 
@@ -211,27 +183,6 @@
   - Optimistic: **$529K/year** (@ $300/hour fully-loaded cost)
 
 **Confidence Level**: High (6 RCAs validate patterns: detection gaps, manual correlation, approval delays)
-
----
-
-## Platform Evaluation Criteria
-
-### Tier 1 (Must-Have)
-1. Multi-layer observability (infra + platform + app)
-2. Signal correlation (combine 3+ metrics)
-3. Historical pattern matching
-4. Guided remediation with approval workflows
-
-### Tier 2 (High Priority)
-1. Pre-flight validation
-2. Automated remediation for known-safe fixes
-3. Smart alerting (reduce noise, auto-triage)
-4. Timeline/release correlation
-
-### Tier 3 (Nice-to-Have)
-1. Integration with existing tools (Warden AIOps showed promise but unreliable)
-2. Natural language incident queries
-3. Auto-generated RCA drafts
 
 ---
 

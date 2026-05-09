@@ -1,0 +1,40 @@
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local workspace files (not for sharing)
+.claude/
+backups/
+research/
+runbooks/
+setup-backup-system.sh
+SYSTEM-STATUS.txt
+rca-urls-example.txt
+
+# Status/progress files (keep in repo for now, but commented out if you want to exclude later)
+# CLEANUP-COMPLETE.md
+# CONCISE-EXEC-SUMMARY-ADDED.md
+# EXEC-SUMMARY-SPEC-ADDED.md
+# EXECUTIVE-ACCESS-COMPLETE.md
+# FINAL-ADDITIONS.md
+# PROGRESS-SUMMARY.md
+# PROJECT-STRUCTURE-OLD.md
+# PROJECT-STRUCTURE.md
+# RCA-ANALYZER-SKILL-COMPLETE.md
+# RCA-TOOLKIT-COMPLETE.md
+# RCA-TOOLKIT-READY.md
+# RCA-TOOLKIT-WITH-EXAMPLES.md
+# SYSTEM-READY.md
+# TOOLKIT-FINAL-STATUS.md
