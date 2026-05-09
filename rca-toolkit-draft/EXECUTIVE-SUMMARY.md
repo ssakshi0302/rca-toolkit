@@ -65,14 +65,16 @@
 - [RCA #2](examples/temporal/rca-analyses/rca-analysis-2.md) (Mesh Misconfiguration): Identical to GIA2H incident (Dec 2025), same mesh issue, same fix (rolling restart)
 - 4-month gap between incidents, investigation stalled
 - Total TTR: 25 hours (could have been <1h with pattern match)
+- **CAR gap**: Many RCAs generate CARs, but incidents recur before CARs are fixed
 
 **Root Causes**:
 - Historical patterns not integrated into detection/triage
 - RCA corpus not searchable or embedded
 - Stale IPs in configs
-- CARs not prioritized across RCAs
+- **No CAR prioritization process across RCAs** - CARs treated independently per incident, not prioritized by recurrence risk
+- CARs often deprioritized vs feature work
 
-**Impact**: 50-80% faster diagnosis with historical pattern matching
+**Impact**: 50-80% faster diagnosis with historical pattern matching + CAR prioritization process
 
 ---
 
@@ -157,6 +159,20 @@
 
 ---
 
+### 5. CAR Prioritization Process
+
+**Implement CAR tracking and prioritization across RCAs**:
+- Create CAR dashboard showing: open CARs, related RCAs, time since first incident, recurrence count
+- Score CARs by: frequency (how many RCAs), severity (customer impact), time open
+- Automated escalation: If incident recurs and CAR is open >90 days, auto-escalate to EM
+- Quarterly CAR review: Prioritize by recurrence prevention impact (vs feature work)
+
+**Why**: RCA #2 recurred 4 months after initial incident - CAR existed but not prioritized
+
+**Expected impact**: Prevent 30-50% of recurring incidents
+
+---
+
 ## Short-Term Actions (60-90 Days)
 
 ### 1. Automated Signal Correlation
@@ -170,14 +186,20 @@
 
 ---
 
-### 2. Historical Pattern Matching
+### 2. Historical Pattern Matching & CAR Prioritization
 
 **Integrate RCA corpus**:
 - Embed past RCAs for similarity matching
 - Auto-suggest fixes from similar incidents
 - Surface "this looks like PRB-XXXXX" during triage
 
-**Expected impact**: 50-80% faster diagnosis for recurring patterns
+**CAR prioritization process**:
+- Score CARs across RCAs by recurrence risk (frequency, severity, customer impact)
+- Dashboard showing: open CARs, related RCAs, time since first incident
+- Automated escalation if CAR not addressed and incident recurs
+- Quarterly CAR review with prioritization by recurrence prevention impact
+
+**Expected impact**: 50-80% faster diagnosis + prevent recurring incidents (RCA #2 had 4-month recurrence)
 
 ---
 
@@ -232,14 +254,15 @@
 **Approve**:
 1. **Implement 10 missing alerts** (detection) → **92% TTD reduction**
 2. **Create 4 runbooks** (diagnosis) → **70% TTX reduction**
-3. **Pilot 3 automation candidates** (remediation) → **60% TTR reduction**
+3. **Implement CAR prioritization process** (prevent recurrence) → **30-50% fewer recurring incidents**
+4. **Pilot 3 automation candidates** (remediation) → **60% TTR reduction**
 
-**Expected impact**: $264K-529K/year savings, 71% reduction in incident time
+**Expected impact**: $264K-529K/year savings, 71% reduction in incident time, prevent recurring incidents
 
 **Risk**: Low (post-incident analysis, safe automation with rollback plans)
 
 **Timeline**:
-- Immediate (alerts): 30 days
+- Immediate (alerts, CAR process): 30 days
 - Short-term (runbooks + automation): 60-90 days
 - Long-term (capacity planning, auto-remediation): 6-12 months
 
