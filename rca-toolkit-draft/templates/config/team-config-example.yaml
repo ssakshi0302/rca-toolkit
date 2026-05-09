@@ -1,0 +1,68 @@
+# Example Team Config for RCA Analyzer
+# This is a minimal example - adapt to your team's services and knowledge files
+
+team:
+  name: MyTeam
+  service_prefix: myservice
+  pagerduty_service: MyService Production
+
+services:
+  - name: myservice-api
+    port: 8080
+    type: API Gateway
+  - name: myservice-worker
+    port: 8081
+    type: Background Worker
+
+infrastructure:
+  database: PostgreSQL
+  search: Elasticsearch
+  mesh: Istio
+  monitoring: Prometheus + Grafana
+  logging: Splunk
+
+knowledge:
+  # Point these to YOUR team's knowledge files
+  metrics_catalog: .claude/context/myteam/metrics-catalog.md
+  query_patterns: .claude/context/myteam/query-patterns.md
+  architecture: .claude/context/myteam/service-architecture.md
+
+alerts:
+  myservice-api-errors-high:
+    services: [myservice-api]
+    common_causes:
+      - database_saturation
+      - rate_limiting
+      - deployment_issue
+    runbook_pattern: diagnosis/api-errors
+
+  myservice-db-cpu-high:
+    services: [myservice-api, myservice-worker]
+    common_causes:
+      - workload_spike
+      - slow_query
+      - missing_index
+
+runbook_patterns:
+  diagnosis:
+    api_errors:
+      symptoms: [high_error_rate, slow_response]
+    db_saturation:
+      symptoms: [high_cpu, slow_queries, connection_pool_exhaustion]
+
+  remediation:
+    rolling_restart:
+      when: [memory_leak, stale_connections]
+    resource_scaling:
+      when: [cpu_saturation, workload_surge]
+
+environments:
+  HIGH:
+    - prod
+    - production
+  MEDIUM:
+    - staging
+    - preprod
+  LOW:
+    - dev
+    - test

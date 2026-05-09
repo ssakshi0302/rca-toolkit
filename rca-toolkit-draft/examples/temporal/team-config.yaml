@@ -1,0 +1,101 @@
+# Temporal Team Configuration for RCA Analyzer
+# This config stays PRIVATE (not shared to rca-toolkit)
+
+team:
+  name: OrcaaS
+  service_prefix: temporal
+  pagerduty_service: Temporal Production
+
+services:
+  - name: temporalfrontend
+    port: 7233
+    type: API Gateway
+  - name: temporalhistory
+    port: 7234
+    type: Core Service
+  - name: temporalmatching
+    port: 7235
+    type: Task Queue Manager
+  - name: temporalworker
+    port: 7239
+    type: System Workflows
+
+infrastructure:
+  database: RDS Aurora (Postgres)
+  search: OpenSearch/Elasticsearch
+  mesh: Istio
+  monitoring: Argus + Grafana
+  logging: Splunk
+
+knowledge:
+  metrics_catalog: .claude/context/temporal/temporal-metrics-complete-catalog.md
+  argus_patterns: .claude/context/temporal/temporal-argus-patterns.md
+  splunk_patterns: .claude/context/temporal/temporal-splunk-patterns.md
+  service_architecture: .claude/context/temporal/temporal-service-architecture.md
+  incidents: .claude/context/temporal/temporal-incidents.md
+
+# Alert → Service → Root Cause mapping
+alerts:
+  temporal-frontend-availability-low:
+    services: [temporalfrontend]
+    common_causes:
+      - mesh_failure
+      - db_saturation
+      - deployment_issue
+      - wasm_panic
+    runbook_pattern: diagnosis/mesh-routing-failure
+
+  temporal-db-cpu-high:
+    services: [temporalhistory, temporalmatching]
+    common_causes:
+      - workload_spike
+      - archival_load
+      - missing_index
+      - slow_query
+    runbook_pattern: diagnosis/db-cpu-saturation
+
+  temporal-history-availability-low:
+    services: [temporalhistory]
+    common_causes:
+      - memory_exhaustion
+      - db_saturation
+      - pod_crash
+    runbook_pattern: diagnosis/capacity-exhaustion
+
+# Pattern → Template mapping
+runbook_patterns:
+  diagnosis:
+    db_cpu_saturation:
+      symptoms: [high_cpu, slow_queries, connection_pool_exhaustion]
+      investigation: [check_namespace_qps, check_slow_queries, check_archival_load]
+    mesh_routing_failure:
+      symptoms: [upstream_connect_error, passthrough_cluster_traffic]
+      investigation: [check_istio_routes, check_sidecar_logs, check_deployment_timing]
+    capacity_exhaustion:
+      symptoms: [oomkilled, memory_pressure, pod_restarts]
+      investigation: [check_memory_trends, check_workload_surge, check_hpa_config]
+    archival_backlog:
+      symptoms: [queue_depth_growing, archival_failures]
+      investigation: [check_queue_depth, check_s3_latency, check_worker_capacity]
+
+  remediation:
+    rolling_restart:
+      when: [memory_leak, goroutine_leak, stale_connections]
+      safety_checks: [verify_cluster_health, check_active_workflows]
+    resource_scaling:
+      when: [cpu_saturation, memory_pressure, workload_surge]
+      safety_checks: [verify_hpa_config, check_node_capacity]
+    config_rollback:
+      when: [deployment_issue, config_change_correlation]
+      safety_checks: [identify_previous_version, verify_rollback_path]
+
+# Environment priority (for batch processing)
+environments:
+  HIGH:
+    - prod
+    - esvc
+  MEDIUM:
+    - preprod
+  LOW:
+    - dev
+    - test

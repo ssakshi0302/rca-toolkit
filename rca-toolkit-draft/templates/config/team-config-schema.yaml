@@ -1,0 +1,48 @@
+# Team Config Schema for RCA Analyzer
+# Version: 1.0
+
+# This schema defines what teams must provide in their config file
+
+team:
+  name: string (required)               # Team name
+  service_prefix: string (required)     # Service naming prefix (e.g., "temporal", "kafka")
+  pagerduty_service: string (optional)  # PagerDuty service name
+
+services:
+  - name: string (required)             # Service name
+    port: integer (optional)            # Service port
+    type: string (optional)             # Service type/role
+
+infrastructure:                         # Optional section
+  database: string                      # Database type
+  search: string                        # Search/indexing system
+  mesh: string                          # Service mesh
+  monitoring: string                    # Monitoring system
+  logging: string                       # Logging system
+
+knowledge:
+  metrics_catalog: path (required)      # Path to team's metrics catalog
+  query_patterns: path (required)       # Path to query patterns (Argus/Splunk/etc)
+  architecture: path (optional)         # Path to service architecture doc
+  incidents: path (optional)            # Path to incident patterns doc
+
+alerts:                                 # Alert → service → root cause mapping
+  <alert_name>:
+    services: [string] (required)       # List of affected services
+    common_causes: [string] (required)  # List of common root causes
+    runbook_pattern: string (optional)  # Default runbook pattern
+
+runbook_patterns:                       # Pattern → template mapping
+  diagnosis:
+    <pattern_name>:
+      symptoms: [string] (required)     # List of symptoms
+      template: path (optional)         # Path to custom template
+  remediation:
+    <pattern_name>:
+      when: [string] (required)         # When to use this remediation
+      template: path (optional)         # Path to custom template
+
+environments:                           # Environment priority (for batch processing)
+  HIGH: [string]                        # High-priority environments
+  MEDIUM: [string]                      # Medium-priority environments
+  LOW: [string]                         # Low-priority environments

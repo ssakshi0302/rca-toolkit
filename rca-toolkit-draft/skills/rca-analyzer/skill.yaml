@@ -1,0 +1,491 @@
+---
+name: rca-analyzer
+description: Analyze incident RCAs to identify automation opportunities and reduce TTD, TTX, TTR
+version: 1.0
+author: Sakshi Mehrotra (OrcaaS)
+---
+
+# RCA Analyzer Skill
+
+## Purpose
+Identify automation opportunities and time reduction in incident response:
+- **TTD (Time to Detect)**: Find missing alerts/metrics that would detect faster
+- **TTX (Time to Diagnose)**: Generate runbooks to speed up causation analysis
+- **TTR (Time to Remediate)**: Identify automation candidates for faster resolution
+- **ROI**: Quantify time savings and annual cost reduction from automation
+
+## Arguments
+
+**Single RCA**:
+- `<url>` - Google Doc URL
+
+**Batch mode**:
+- `--batch <url1>, <url2>, <url3>` - Multiple URLs (comma-separated)
+
+**Options**:
+- `--generate-runbook` - Generate runbook if pattern matches ≥2 RCAs
+- `--config=<path>` - Team config file (default: `.claude/config/temporal-config.yaml`)
+- `--environment=<env>` - Environment priority (prod/esvc/dev) for batch ordering
+
+## Workflow
+
+### 1. Parse Arguments
+```
+if args contains "--batch":
+    urls = parse_batch_urls(args)
+    mode = "batch"
+else:
+    urls = [parse_single_url(args)]
+    mode = "single"
+
+config_path = extract_config(args) or ".claude/config/temporal-config.yaml"
+generate_runbook = check_runbook_flag(args)
+```
+
+### 2. Load Team Config
+```yaml
+# Read config from config_path
+team:
+  name: <team_name>
+  service_prefix: <prefix>
+
+knowledge:
+  metrics_catalog: <path>
+  query_patterns: <path>
+  architecture: <path>
+
+alerts:
+  <alert_name>:
+    services: [<services>]
+    common_causes: [<causes>]
+```
+
+### 3. Prompt for Runbook Generation (if not specified)
+```
+if not generate_runbook specified:
+    ask_user("Generate runbooks for recurring patterns? (y/n)")
+    generate_runbook = user_response
+```
+
+### 4. Analysis Dispatch
+
+**Single mode**:
+```
+analysis_result = spawn_analysis_subagent(
+    url=urls[0],
+    config=team_config,
+    rca_number=next_rca_number()
+)
+save_analysis(analysis_result, path="research/past rca/rca-analysis-N.md")
+```
+
+**Batch mode**:
+```
+results = []
+for url in urls:
+    subagent = spawn_analysis_subagent(
+        url=url,
+        config=team_config,
+        rca_number=next_rca_number(),
+        background=true
+    )
+    results.append(subagent)
+
+wait_for_all(results)
+analyses = [r.output for r in results]
+save_batch_analyses(analyses)
+```
+
+### 5. Pattern Detection
+
+```
+if mode == "batch":
+    patterns = detect_patterns(analyses)
+    # Pattern: (service, symptom, root_cause_category)
+    # Example: ("temporalhistory", "high_errors", "db_saturation")
+
+    recurring_patterns = [p for p in patterns if p.count >= 2]
+```
+
+### 6. Runbook Generation (if requested + pattern found)
+
+```
+if generate_runbook and recurring_patterns:
+    for pattern in recurring_patterns:
+        runbook = generate_deterministic_runbook(
+            pattern=pattern,
+            template=select_template(pattern),
+            config=team_config,
+            related_rcas=[a for a in analyses if matches(a, pattern)]
+        )
+        save_runbook(runbook, path=f"runbooks/{pattern.type}/{pattern.key}.md")
+```
+
+### 7. Output Summary
+
+```
+print_summary:
+    - RCA count: N
+    - Files saved: [paths]
+    - Patterns identified: [patterns]
+    - Runbooks generated: [runbook_paths] (if any)
+    - Average TTD: <duration>
+    - Average TTR: <duration>
+    - Estimated ROI: $X-Y/year (if batch)
+```
+
+## Analysis Subagent Template
+
+**Subagent prompt** (for each RCA):
+```
+You are analyzing an incident RCA from a Google Doc.
+
+**Google Doc URL**: {url}
+**Team Config**: {team_config_path}
+**RCA Number**: {rca_number}
+
+**Your task**:
+1. Read Google Doc via MCP (mcp__plugin_google-workspace_vmcp-google-workspace__get_doc_as_markdown)
+2. Extract structured data using this template:
+
+## RCA Analysis #{rca_number}
+
+**Incident Title**: <extract from doc>
+**Date**: <YYYY-MM-DD>
+**Environment**: <prod/esvc/dev>
+**Service(s) Affected**: <from config.services>
+**Priority**: <HIGH if prod/esvc, MEDIUM if preprod, LOW if dev>
+
+### Timeline
+- **Incident Start**: <timestamp>
+- **Detection**: <timestamp> (TTD: <duration>)
+- **Diagnosis Complete**: <timestamp> (TTX: <duration from detection>)
+- **Resolution**: <timestamp> (TTR: <total duration from start>)
+
+### Root Cause
+**Category**: <db_saturation | mesh_failure | capacity_exhaustion | archival_backlog | config_issue | deployment_issue>
+**Service**: <primary affected service>
+**Details**: <1-2 sentence summary>
+
+**Symptoms**:
+- <symptom 1>
+- <symptom 2>
+
+**Contributing Factors**:
+- <factor 1>
+- <factor 2>
+
+### What Worked Well
+
+**Positive Signals** (existing monitoring/alerting that functioned correctly):
+- <alert/metric that fired correctly>
+- <dashboard that showed relevant data>
+- <existing runbook/process that helped>
+- <team response/coordination that was effective>
+
+**Effective Tools**:
+- <monitoring tool that provided visibility>
+- <communication channel that worked>
+
+### Gaps Identified
+
+**Detection Gap** (TTD delay):
+- **Duration**: <duration>
+- **Why missed**: <reason - what alert/metric was missing>
+- **What existed**: <what signals were observable but not alerted on>
+- **Fix**: <specific alert/metric to add with threshold>
+
+**Diagnosis Gap** (TTX delay):
+- **Duration**: <duration>
+- **Why slow**: <reason - manual correlation, noisy logs, missing runbook>
+- **What worked**: <any existing tools/dashboards that helped>
+- **Fix**: <what runbook/correlation/knowledge would have helped>
+
+**Remediation Gap** (TTR delay):
+- **Duration**: <duration>
+- **Why slow**: <reason - manual process, approval delays, no automation>
+- **What worked**: <any existing automation or processes>
+- **Fix**: <what automation would have helped, with safety considerations>
+
+### Automation Opportunity
+
+**Detection**:
+- <metric/alert to add>
+- <expected TTD reduction>
+
+**Diagnosis**:
+- <runbook pattern: diagnosis/{pattern_key}>
+- <expected TTX reduction>
+
+**Remediation**:
+- <automation possibility>
+- <safety considerations>
+- <expected TTR reduction>
+
+### ROI Estimate
+- **Manual effort**: <hours> × <oncall rate> = $<amount>
+- **With automation**: <reduced hours> × <oncall rate> = $<amount>
+- **Savings per incident**: $<amount>
+- **Annual projection** (if recurring): $<amount>
+
+3. Save analysis to: research/past rca/rca-analysis-{rca_number}.md
+4. Return summary:
+   - RCA number
+   - Environment
+   - Services
+   - Root cause category
+   - TTD/TTX/TTR
+   - Gaps
+   - Automation opportunities
+```
+
+## Pattern Detection Logic
+
+**Pattern matching** (deterministic):
+```python
+def detect_patterns(analyses):
+    patterns = {}
+
+    for analysis in analyses:
+        # Extract pattern key
+        pattern_key = (
+            analysis.service,
+            analysis.symptom_primary,
+            analysis.root_cause_category
+        )
+
+        if pattern_key not in patterns:
+            patterns[pattern_key] = {
+                "count": 0,
+                "rcas": [],
+                "avg_ttd": [],
+                "avg_ttr": []
+            }
+
+        patterns[pattern_key]["count"] += 1
+        patterns[pattern_key]["rcas"].append(analysis.rca_number)
+        patterns[pattern_key]["avg_ttd"].append(analysis.ttd_seconds)
+        patterns[pattern_key]["avg_ttr"].append(analysis.ttr_seconds)
+
+    # Filter recurring patterns (≥2 occurrences)
+    recurring = {k: v for k, v in patterns.items() if v["count"] >= 2}
+
+    return recurring
+```
+
+## Runbook Template Selection
+
+**Template mapping** (from team config):
+```yaml
+runbook_patterns:
+  diagnosis:
+    db_cpu_saturation:
+      symptoms: [high_cpu, slow_queries]
+      template: templates/runbook/diagnosis-db-saturation.md
+    mesh_routing_failure:
+      symptoms: [upstream_connect_error, passthrough_traffic]
+      template: templates/runbook/diagnosis-mesh-failure.md
+    capacity_exhaustion:
+      symptoms: [oomkilled, memory_pressure]
+      template: templates/runbook/diagnosis-capacity-exhaustion.md
+
+  remediation:
+    rolling_restart:
+      when: [memory_leak, stale_connections]
+      template: templates/runbook/remediation-rolling-restart.md
+    resource_scaling:
+      when: [cpu_saturation, workload_surge]
+      template: templates/runbook/remediation-resource-scaling.md
+```
+
+**Selection logic**:
+```python
+def select_template(pattern, config):
+    symptom = pattern.symptom_primary
+    root_cause = pattern.root_cause_category
+
+    # Match symptom to diagnosis template
+    for template_name, template_config in config.runbook_patterns.diagnosis.items():
+        if symptom in template_config.symptoms:
+            return {
+                "type": "diagnosis",
+                "name": template_name,
+                "path": template_config.template
+            }
+
+    # Match root cause to remediation template
+    for template_name, template_config in config.runbook_patterns.remediation.items():
+        if root_cause in template_config.when:
+            return {
+                "type": "remediation",
+                "name": template_name,
+                "path": template_config.template
+            }
+
+    return None  # No template match
+```
+
+## Runbook Generation (Deterministic)
+
+**Fill template with pattern data**:
+```python
+def generate_deterministic_runbook(pattern, template, config, related_rcas):
+    # Load template
+    template_content = read_file(template.path)
+
+    # Extract placeholders: <service>, <metric_name>, <query_command>, etc.
+    placeholders = extract_placeholders(template_content)
+
+    # Fill from config + pattern + RCA data
+    replacements = {
+        "<service>": pattern.service,
+        "<pattern_name>": format_pattern_name(pattern),
+        "<frequency>": f"{pattern.count} incidents in {calculate_timespan(related_rcas)}",
+        "<avg_ttd>": format_duration(mean(pattern.avg_ttd)),
+        "<avg_ttr>": format_duration(mean(pattern.avg_ttr)),
+        "<last_occurrence>": max([rca.date for rca in related_rcas]),
+        "<related_rcas>": format_rca_list(related_rcas),
+
+        # From config
+        "<metric_name>": lookup_metric(pattern.symptom, config.knowledge.metrics_catalog),
+        "<query_command>": lookup_query(pattern.symptom, config.knowledge.query_patterns),
+        "<team>": config.team.name,
+        "<alert_name>": lookup_alert(pattern.service, config.alerts),
+    }
+
+    # Replace placeholders
+    runbook_content = template_content
+    for placeholder, value in replacements.items():
+        runbook_content = runbook_content.replace(placeholder, value)
+
+    return runbook_content
+```
+
+## Backup System Integration
+
+**Before batch updates**:
+```bash
+# Run backup script
+./scripts/setup-backup-system.sh
+
+# Proceed with analysis
+```
+
+## Error Handling
+
+**Google Doc read failure**:
+```
+if MCP read fails:
+    log_error("Failed to read Google Doc: {url}")
+    skip_to_next_url()
+```
+
+**Config file missing**:
+```
+if config_file not found:
+    error("Team config not found at: {config_path}")
+    suggest("Create config using: rca-toolkit-draft/templates/config/team-config-example.yaml")
+    exit(1)
+```
+
+**No patterns found**:
+```
+if batch mode and no recurring patterns:
+    log_info("No recurring patterns found (all RCAs unique)")
+    skip_runbook_generation()
+```
+
+## Skill Size Budget
+
+**Current allocation**:
+- Argument parsing: ~50 lines
+- Config loading: ~50 lines
+- Single RCA analysis: ~100 lines
+- Batch orchestration: ~80 lines
+- Pattern detection: ~60 lines
+- Runbook generation: ~80 lines
+- Output formatting: ~50 lines
+- Error handling: ~30 lines
+
+**Total**: ~500 lines (target met)
+
+## Output Files
+
+### Individual RCA Analysis
+**Location**: `research/past rca/rca-analysis-[N].md`
+
+**Contains**:
+- Incident metadata (service, environment, priority, root cause)
+- Timeline (incident start, detection, diagnosis, resolution)
+- TTD/TTX/TTR breakdown
+- Gaps identified (detection, diagnosis, remediation)
+- Automation opportunities
+- Expected time savings per phase
+
+### Batch Synthesis
+**Location**: `research/past rca/batch-synthesis.md`
+
+**Contains**:
+- Aggregate metrics (average TTD/TTX/TTR, ranges)
+- Patterns identified (≥2 similar incidents)
+- Missing alerts summary
+- Runbook candidates
+- ROI calculation (manual vs automated)
+- Annual projection if patterns recur
+
+### Executive Summary (if --generate-summary)
+**Location**: `[project-root]/EXECUTIVE-SUMMARY.md`
+
+**Purpose**: Leadership-ready incident automation action plan
+
+**Requirements**:
+- 1-2 pages maximum (3-5 minute read)
+- Scannable format (tables and bullets, minimal text)
+- Data-driven (percentages, hours, dollars)
+- Action-oriented (specific alerts with thresholds, not generic)
+- Quantified impacts (all findings reference specific RCAs)
+
+**Contains**:
+- 3-line executive summary (bottleneck, automation impact, ROI)
+- Data overview table (RCAs analyzed, TTD/TTR averages, ranges)
+- Critical findings (4 key issues: detection delays, manual correlation, recurring patterns, remediation gaps)
+- Incident summary table (all RCAs with TTD/TTX/TTR, detection gaps, resolution actions)
+- Immediate actions (30 days):
+  - Alert table with specific thresholds (e.g., "DB CPU >80% for 10+ min")
+  - Runbook table with diagnosis flow and remediation
+  - Pre-flight validation requirements
+- Short-term actions (60-90 days): Signal correlation, pattern matching, guided remediation
+- Long-term actions (6-12 months): Auto-remediation, capacity planning, smart alerting
+- ROI estimate table (current → target for TTD/TTX/TTR, annual hours saved)
+- Recommendations (3-4 approvals with quantified impact, risk assessment, timeline)
+- Appendix (data sources)
+
+**Specification**: See `docs/executive-summary-spec.md` for complete formatting requirements
+
+**When to generate**: After batch analysis when leadership review is needed
+
+**Validation**:
+- All alerts have specific thresholds (not "availability alert")
+- All findings reference specific RCAs (e.g., "RCA #1: 20h TTD")
+- All impacts are quantified (percentages or hours)
+- No marketing language ("game-changer", "exciting", etc.)
+- No platform comparison or evaluation steps (action plan only)
+
+### Runbooks (if --generate-runbook)
+**Location**: `runbooks/diagnosis/[service]-[pattern].md`
+
+**Contains**:
+- Pattern description (service, symptom, root cause)
+- Symptoms (user impact + system indicators)
+- Diagnosis steps (with decision points)
+- Cross-service correlation
+- Common pitfalls
+- Related incidents
+- Metadata (pattern confidence, team, services)
+
+## Next Steps After Skill Creation
+
+1. **Test** with 6 existing RCAs in private workspace
+2. **Validate** pattern detection logic
+3. **Refine** runbook templates based on results
+4. **Extract** to rca-toolkit repository when stable
