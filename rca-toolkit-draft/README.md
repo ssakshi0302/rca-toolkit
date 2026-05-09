@@ -1,228 +1,298 @@
-# RCA Toolkit
+# Post-Incident Analysis Framework for Temporal Operations
 
-**Purpose**: Analyze incident RCAs to identify automation opportunities and reduce Time to Detect (TTD), Time to Diagnose (TTX), and Time to Remediate (TTR).
+**A structured approach to operational maturity through systematic incident analysis**
 
 **Version**: 1.0  
-**Status**: Ready for testing
+**Status**: Operational - Temporal team pilot complete
 
 ---
 
-## Quick Links
+## Overview
 
-**For Executives**: See `EXECUTIVE-SUMMARY.md` - **1-page summary** showing 71% incident time reduction from 6 Temporal incidents
+Temporal incidents already contain meaningful operational patterns. This framework extracts those patterns to identify operational maturity gaps before investing in specific AIOps or agentic automation platforms.
 
-**For Detailed Results**: See `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md` - Full 4-page analysis
-
-**For Navigation**: See `EXECUTIVE-NAVIGATION.md` - Guide by role (execs, EMs, engineers)
-
-**For Complete Example**: See `examples/temporal/EXAMPLE-OVERVIEW.md` - End-to-end workflow with real incidents
+**Core principle**: AI systems are only as effective as the operational signals, observability, and runbook quality available to them.
 
 ---
 
-## What It Does
+## Vision
 
-**Analyzes incident RCAs** from Google Docs to:
-1. **Identify where time is spent** - Extract TTD, TTX, TTR from incident timeline
-2. **Find automation opportunities** - Detect gaps in detection, diagnosis, remediation
-3. **Quantify impact** - Calculate time savings from automation
-4. **Generate runbooks** - Create deterministic runbooks for recurring patterns (≥2 incidents)
+This framework analyzes historical incidents and RCAs to identify operational maturity gaps across:
 
-**Goal**: Reduce manual incident response time through data-driven automation identification.
+**Detection**: Missing alerts, metric gaps, observable signals not monitored  
+**Diagnosis**: Manual correlation, missing runbooks, signal interpretation  
+**Remediation**: Manual processes, approval bottlenecks, automation candidates  
+**Operational Learning**: Pattern recognition, knowledge capture, recurrence prevention
+
+**Long-term direction**: Enable signal-aware causation and automated reasoning for Temporal operations, built on a foundation of structured operational intelligence.
+
+---
+
+## Why This Framework Exists
+
+### The Problem
+
+Before scaling automation, we need structured understanding of:
+- Recurring incident patterns (where do we see the same failures?)
+- Missing metrics and signals (what observable data exists but isn't monitored?)
+- Alerting gaps (which signals should trigger alerts?)
+- Runbook quality (what institutional knowledge exists only in people's heads?)
+- Automation opportunities (what can be safely automated?)
+- Remediation workflows (where are the approval bottlenecks?)
+
+### The Approach
+
+Rather than immediately adopting an AIOps platform, we systematically analyze past incidents to understand:
+1. What operational signals already exist
+2. Where detection/diagnosis delays occur
+3. Which patterns recur frequently
+4. What can be improved with current tooling
+5. What groundwork is needed for future automation
+
+---
+
+## Key Learnings (Temporal Team - 6 RCAs)
+
+### Observability Already Exists
+- **100% of incidents had observable signals** in existing systems (Argus, Splunk, Grafana)
+- Delays were caused by missing alerting logic, not missing data
+- Most metrics existed; they simply weren't configured to alert
+
+### Detection Delay is the Largest Bottleneck
+- **75% of incidents had detection time >10 hours** (range: 29 min - 3 days)
+- Average detection time: 16.5 hours
+- Once detected and focused, diagnosis was relatively fast (1-14 hours)
+- **Insight**: Improving detection has higher leverage than optimizing diagnosis
+
+### Missing Alerts Create Operational Load
+- **10 specific missing alerts identified** across 6 incidents
+- Examples: DB CPU >80%, memory pressure >70%, OOMKilled events, queue drain rate
+- Each missing alert added hours to detection time
+- **Insight**: Alerts are operational debt - missing alerts compound over time
+
+### Patterns Enable Operational Intelligence
+- **2 recurring patterns found** in 6 RCAs (33% recurrence rate)
+- Same service + symptom + root cause = runbook opportunity
+- Patterns convert reactive knowledge into proactive tooling
+- **Insight**: RCA corpus is a knowledge mine, not a document archive
+
+### CARs Without Prioritization Lead to Recurrence
+- RCA #2 was identical to an incident 4 months prior
+- CAR existed but wasn't prioritized by recurrence risk
+- **Insight**: CARs need cross-RCA prioritization, not per-incident tracking
+
+---
+
+## Phased Maturity Model
+
+### Phase 1: Observational Insights (Current)
+**Goal**: Understand operational gaps through structured RCA analysis
+
+**Activities**:
+- Analyze historical incidents (6 RCAs completed for Temporal)
+- Identify missing alerts, metrics, and runbooks
+- Document recurring patterns
+- Quantify detection and remediation delays
+
+**Output**: Operational intelligence baseline (what we know vs what we need)
+
+**Status**: ✅ Complete for Temporal team
+
+---
+
+### Phase 2: Guided Triage Assistance (Next 60-90 days)
+**Goal**: Reduce manual correlation and diagnosis time
+
+**Activities**:
+- Implement missing alerts (10 identified for Temporal)
+- Create runbooks for recurring patterns (2 patterns → 4 runbooks)
+- Integrate RCA corpus for historical pattern matching
+- Build signal correlation chains (automated causation)
+- Implement CAR prioritization process
+
+**Output**: Reduced diagnosis time through structured guidance and historical knowledge
+
+**Status**: Design complete, implementation planned
+
+---
+
+### Phase 3: Automated Reasoning & Remediation (6-12 months)
+**Goal**: Enable safe, context-aware automation
+
+**Prerequisites** (from Phase 1 & 2):
+- Comprehensive alert coverage
+- High-quality runbook library
+- Historical pattern database
+- Signal correlation logic
+- CAR prioritization process
+
+**Activities**:
+- Automated signal correlation and causation
+- AI-assisted triage and diagnosis (with guardrails)
+- Guided remediation workflows (human-in-loop)
+- Pilot low-risk automated remediation (30-40% of cases)
+
+**Output**: Operational intelligence platform with automation capabilities
+
+**Status**: Groundwork in progress
+
+---
+
+## What This Framework Does
+
+### Analyzes Post-Incident RCAs to Extract:
+
+**1. Time Breakdown** (TTD, TTX, TTR)
+- How long until incident detected
+- How long to identify root cause
+- How long to resolve
+- Where time is lost in each phase
+
+**2. Operational Gaps**
+- **Detection**: What alert/metric was missing
+- **Diagnosis**: What runbook/knowledge would have helped
+- **Remediation**: What automation would have accelerated resolution
+
+**3. Pattern Recognition**
+- Recurring incidents (same service + symptom + root cause)
+- Frequency and severity scoring
+- Runbook generation candidates
+
+**4. Automation Opportunities**
+- Safe automation candidates (low-risk, high-frequency)
+- Approval workflow bottlenecks
+- Manual process elimination candidates
+
+**5. Operational Intelligence**
+- Observable signals not monitored
+- CAR prioritization by recurrence risk
+- Historical pattern matching for future incidents
+
+---
+
+## Preliminary Results (Temporal Team)
+
+**Context**: 6 production RCAs analyzed (July-April 2026)
+
+### Detection Gaps
+- 10 missing alerts identified (DB CPU, memory pressure, OOMKilled, queue depth, etc.)
+- Detection delays: 29 minutes to 3 days (average: 16.5 hours)
+- Preliminary analysis indicates significant opportunity to reduce detection time through targeted alerting
+
+### Diagnosis Patterns
+- 2 recurring patterns identified (capacity exhaustion, mesh routing failure)
+- 4 runbook candidates generated
+- Manual correlation took 1-14 hours per incident
+- Opportunity to reduce diagnosis time through historical pattern matching
+
+### Remediation Bottlenecks
+- 3 automation candidates identified (HPA implementation, config validation, graceful timeout)
+- Manual approval processes added 1-4 days
+- CAR recurrence: 1 incident recurred 4 months later (CAR existed but not prioritized)
+
+### Operational Learning
+- 100% of incidents had observable signals before detection
+- Detection delay was consistently the largest bottleneck
+- Patterns emerged from just 6 RCAs - corpus analysis scales with data
 
 ---
 
 ## Quick Start
 
-### 1. Install (2 min)
+### 1. Install
 ```bash
-git clone git.soma.salesforce.com/orcaas/rca-toolkit.git
-cd rca-toolkit
+git clone git.soma.salesforce.com/orcaas/post-incident-analysis-framework.git
+cd post-incident-analysis-framework
 ```
 
-### 2. Create Team Config (3 min)
+### 2. Configure Your Team
 ```bash
 mkdir -p .claude/config
 cp templates/config/team-config-example.yaml .claude/config/myteam-config.yaml
-# Edit config: add your services, metrics catalog, query patterns
+# Edit: add your services, metrics catalog, query patterns
 ```
 
-### 3. Analyze First RCA (2 min)
+### 3. Analyze First RCA
 ```bash
 /rca-analyzer https://docs.google.com/document/d/YOUR_RCA_DOC
 ```
 
-**Output**:
-```
-✅ RCA Analysis Complete
-├─ Environment: prod (HIGH priority)
-├─ Service: myservice-api
-├─ Root Cause: database_saturation
-├─ TTD: 2h 15m (gap: no DB CPU alert)
-├─ TTX: 1h 30m (gap: no runbook for DB saturation)
-├─ TTR: 4h 30m (gap: manual restart process)
-└─ Automation Opportunity: Add alert + runbook → saves 2h TTD, 1h TTX
-```
-
----
-
-## Key Features
-
-### Time Analysis
-- **TTD (Time to Detect)**: How long until incident detected
-- **TTX (Time to Diagnose)**: How long to identify root cause
-- **TTR (Time to Remediate)**: How long to resolve
-
-**Identifies gaps**: What alert/metric/runbook would have reduced each phase
-
-### Automation Opportunities
-
-**Detection**:
-- Missing alerts identified
-- Metric gaps discovered
-- Expected TTD reduction calculated
-
-**Diagnosis** (Causation):
-- Runbook patterns extracted
-- Cross-service correlation logic
-- Expected TTX reduction calculated
-
-**Remediation**:
-- Manual steps identified
-- Automation safety assessed
-- Expected TTR reduction calculated
-
-### Pattern Detection
-- Analyzes ≥2 RCAs in batch mode
-- Identifies recurring patterns (same service + symptom + root cause)
-- Generates deterministic runbooks for patterns
-
-### Time Savings Calculation
-- Manual effort (hours per incident)
-- With automation (reduced hours per incident)
-- Time saved per incident
-- Annual projection (if recurring)
-
----
-
-## Example Output
-
-### Single RCA Analysis
-**File**: `research/past rca/rca-analysis-1.md`
-
-```markdown
-## RCA Analysis #1
-
-**Incident**: Database CPU Saturation (prod1)
-**Service**: temporalhistory
-**Root Cause**: Workload spike without capacity planning
-
-### Timeline
-- Incident Start: 2025-09-06 08:00 UTC
-- Detection: 08:29 UTC (TTD: 29 minutes)
-- Diagnosis Complete: 08:58 UTC (TTX: 29 minutes)
-- Resolution: 14:44 UTC (TTR: 6h 44m)
-
-### Gaps Identified
-
-**Detection Gap** (TTD: 29 min):
-- **Why missed**: No memory pressure alerting
-- **Fix**: Add alert for memory >70% sustained for 10+ min
-- **Expected reduction**: 29 min → 2 min (27 min saved)
-
-**Diagnosis Gap** (TTX: 29 min):
-- **Why slow**: No capacity planning, manual log analysis
-- **Fix**: Runbook for capacity exhaustion + HPA configuration
-- **Expected reduction**: 29 min → 10 min (19 min saved)
-
-**Remediation Gap** (TTR: 6h 44m):
-- **Why slow**: Manual scaling, no HPA/VPA
-- **Fix**: Automated resource scaling (HPA + alerts)
-- **Expected reduction**: 6h 44m → 30 min (6h 14m saved)
-
-### Automation Opportunity
-- **Detection**: Add memory pressure + OOMKilled alerts
-- **Diagnosis**: Create capacity exhaustion runbook
-- **Remediation**: Implement HPA + automated scaling
-- **Total savings per incident**: ~7 hours
-- **Annual projection** (if recurring monthly): $168K-336K/year
-```
-
-### Batch Analysis with Runbook
-**Command**: `/rca-analyzer --batch <url1>, <url2> --generate-runbook`
-
-**Output**:
-```
-✅ Batch Analysis Complete
-├─ RCAs Analyzed: 6
-├─ Patterns Identified: 2 recurring
-│  ├─ temporalhistory-capacity_exhaustion (2 occurrences)
-│  └─ temporalfrontend-mesh_routing_failure (2 occurrences)
-├─ Runbooks Generated: 2
-│  ├─ runbooks/diagnosis/temporalhistory-capacity-exhaustion.md
-│  └─ runbooks/diagnosis/temporalfrontend-mesh-routing-failure.md
-├─ Average TTD: 16.5 hours (range: 29 min - 10 days)
-├─ Average TTR: 33.7 hours (range: 30 min - 10 days)
-└─ Estimated impact: 1,240 hours/year saved (74-90% time reduction)
-```
+**Output**: Structured analysis identifying detection gaps, diagnosis delays, and automation opportunities
 
 ---
 
 ## Use Cases
 
-### 1. Post-Incident Analysis
-**When**: After incident RCA is written  
-**Goal**: Identify what automation would prevent recurrence
+### 1. Post-Incident Operational Review
+**When**: After RCA is written  
+**Goal**: Extract operational learnings beyond incident resolution
 
-```bash
-/rca-analyzer https://docs.google.com/.../rca-doc
-```
-
-**Output**: Gaps analysis + automation opportunities
+**Questions answered**:
+- What signals existed but didn't alert?
+- What knowledge would have accelerated diagnosis?
+- Is this pattern recurring?
+- What CARs should be prioritized?
 
 ---
 
 ### 2. Quarterly Automation Planning
-**When**: Planning automation roadmap  
-**Goal**: Find highest-impact automation opportunities
+**When**: Planning operational improvements  
+**Goal**: Data-driven prioritization of automation work
 
-```bash
-/rca-analyzer --batch <last-quarter-rcas>
-```
-
-**Output**: Recurring patterns + time savings estimates + runbook templates
+**Questions answered**:
+- Which patterns recur most frequently?
+- What automation has highest impact?
+- Where are the biggest operational gaps?
+- Which CARs prevent recurrence?
 
 ---
 
-### 3. Runbook Generation
-**When**: ≥2 incidents with same pattern  
-**Goal**: Create deterministic runbooks
+### 3. Operational Maturity Assessment
+**When**: Evaluating team/service reliability  
+**Goal**: Baseline operational capabilities before platform investment
 
-```bash
-/rca-analyzer --batch <rcas> --generate-runbook
+**Questions answered**:
+- What percentage of incidents have detection gaps?
+- How mature is our runbook library?
+- Are CARs tracked and prioritized?
+- What operational intelligence exists in RCA corpus?
+
+---
+
+## Repository Structure
+
 ```
-
-**Output**: Step-by-step runbooks with rollback plans
+post-incident-analysis-framework/
+├── README.md                    # This file
+├── EXECUTIVE-SUMMARY.md         # 1-page leadership overview
+├── skills/rca-analyzer/         # Analysis framework (<500 lines)
+├── templates/
+│   ├── runbook/                 # Diagnosis/remediation templates
+│   └── config/                  # Team configuration
+├── docs/
+│   ├── quick-start.md           # 5-10 minute setup
+│   ├── team-onboarding.md       # Comprehensive guide
+│   └── executive-summary-spec.md # Leadership communication format
+└── examples/
+    └── temporal/                # Complete Temporal pilot (6 RCAs)
+        ├── EXAMPLE-OVERVIEW.md  # Full workflow walkthrough
+        ├── rca-analyses/        # Individual analyses + synthesis
+        ├── runbooks/            # Generated runbooks (2 patterns)
+        └── knowledge/           # Metrics, queries, architecture
+```
 
 ---
 
 ## Documentation
 
-- **Quick Start**: `docs/quick-start.md` (5-10 minutes)
-- **Team Onboarding**: `docs/team-onboarding.md` (1-2 hours)
-- **Runbook Spec**: `docs/runbook-spec.md` (full specification)
-- **Skill README**: `skills/rca-analyzer/README.md` (usage details)
+**For Executives**: `EXECUTIVE-SUMMARY.md` - Strategic overview and operational impact  
+**For Engineering Managers**: `examples/temporal/EXAMPLE-OVERVIEW.md` - Complete pilot walkthrough  
+**For Teams**: `docs/quick-start.md` - Hands-on setup and first analysis  
+**For Detailed Spec**: `docs/team-onboarding.md` - Comprehensive onboarding
 
 ---
 
-## Requirements
-
-- Claude Code with MCP access
-- Google Workspace MCP (for reading Google Docs)
-- Team config file (points to your metrics/queries/architecture)
-
----
-
-## Team Config
+## Team Configuration
 
 **Location**: `.claude/config/<team>-config.yaml`
 
@@ -238,101 +308,59 @@ services:
 knowledge:
   metrics_catalog: path/to/metrics.md
   query_patterns: path/to/queries.md
+  service_architecture: path/to/architecture.md
 
 environments:
-  HIGH: [prod]
+  HIGH: [prod, esvc]
   LOW: [dev]
 ```
 
-See `templates/config/team-config-example.yaml` for full example.
+**Purpose**: Team-agnostic framework adapts to your services, metrics, and operational context
 
 ---
 
-## Architecture
+## Technical Architecture
 
-**Team-agnostic design**:
-- Core skill (<500 lines) works for any distributed system
-- Config-driven (teams provide their knowledge files)
-- Generic runbook templates (teams can customize)
+**Design Principles**:
+- **Team-agnostic**: Works for any distributed system
+- **Config-driven**: Teams provide their operational knowledge
+- **Modular**: Single RCA analysis, batch processing, pattern detection
+- **Deterministic**: Reproducible results, clear reasoning
 
-**Modular**:
-- Single RCA analysis
-- Batch mode (parallel processing)
-- Pattern detection (deterministic)
-- Runbook generation (opt-in)
+**Components**:
+- RCA extraction (Google Docs → structured data)
+- Gap analysis (detection, diagnosis, remediation)
+- Pattern detection (≥2 similar incidents → runbook)
+- CAR tracking (prioritization by recurrence risk)
 
----
-
-## Output Files
-
-```
-your-project/
-├── research/past rca/
-│   ├── rca-analysis-1.md        # Individual RCA analyses
-│   ├── rca-analysis-2.md
-│   └── batch-synthesis.md       # Aggregate analysis
-└── runbooks/
-    ├── diagnosis/
-    │   └── service-pattern.md   # Generated runbooks
-    └── remediation/
-        └── action-pattern.md
-```
-
----
-
-## Examples from Temporal Team
-
-**6 RCAs analyzed** (prod incidents):
-- 2 recurring patterns identified → runbooks generated
-- 10 missing alerts identified → detection improvements
-- 4 runbook patterns for diagnosis
-- 3 automation candidates for remediation
-
-**Automation opportunities found**:
-- 10 missing alerts (detection)
-- 4 runbook patterns (diagnosis)
-- 3 automation candidates (remediation)
-
----
-
-## Contributing
-
-See `CONTRIBUTING.md` for:
-- How to add runbook patterns
-- How to customize templates
-- How to share learnings with other teams
-
----
-
-## Repository Structure
-
-```
-rca-toolkit/
-├── README.md                    # This file
-├── skills/rca-analyzer/         # Core skill (<500 lines)
-├── templates/
-│   ├── runbook/                 # Diagnosis/remediation templates
-│   └── config/                  # Team config schema/examples
-└── docs/                        # Documentation
-```
+**Size**: Core framework <500 lines (deliberately lightweight)
 
 ---
 
 ## License & Ownership
 
 **Owner**: Sakshi Mehrotra (OrcaaS)  
-**Maintainers**: OrcaaS team  
+**Maintainers**: OrcaaS Temporal team  
 **Access**: Private, org-level (all Salesforce teams)  
-**Repository**: `git.soma.salesforce.com/orcaas/rca-toolkit`
+**Repository**: `git.soma.salesforce.com/orcaas/post-incident-analysis-framework`
 
 ---
 
 ## Getting Help
 
-- **Issues**: Create issue in this repository
-- **Questions**: Slack #rca-automation (internal)
-- **Owner**: Sakshi Mehrotra
+**Issues**: Create issue in this repository  
+**Questions**: Slack #temporal-reliability (or your team channel)  
+**Owner**: Sakshi Mehrotra (OrcaaS)
 
 ---
 
-**Get Started**: See `docs/quick-start.md` for 5-minute setup
+## Next Steps
+
+1. **Review pilot results**: `examples/temporal/EXAMPLE-OVERVIEW.md`
+2. **Understand framework**: `EXECUTIVE-SUMMARY.md`
+3. **Start analyzing**: `docs/quick-start.md`
+4. **Share learnings**: Contribute patterns back to framework
+
+---
+
+**Philosophy**: Build operational maturity before scaling automation. Understand the signals before building the system.

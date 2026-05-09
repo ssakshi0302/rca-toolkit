@@ -1,4 +1,4 @@
-# RCA Toolkit - Purpose & Scope
+# Post-Incident Analysis Framework - Purpose & Scope
 
 **Version**: 1.0  
 **Last Updated**: 2026-05-09
@@ -7,13 +7,15 @@
 
 ## Core Purpose
 
-**Identify automation opportunities to reduce incident response time.**
+**Build operational maturity through systematic incident analysis to identify automation opportunities.**
 
-Analyzes incident RCAs to answer:
-1. **Where is time spent?** (TTD, TTX, TTR breakdown)
-2. **What automation would help?** (missing alerts, runbooks, remediation)
-3. **How much time would it save?** (ROI calculation)
-4. **What patterns recur?** (runbook generation for ≥2 incidents)
+Analyzes incident RCAs to understand:
+1. **Where is time spent?** (Detection, Diagnosis, Remediation breakdown)
+2. **What operational gaps exist?** (missing alerts, runbooks, automation opportunities)
+3. **What patterns recur?** (runbook generation for ≥2 incidents)
+4. **What groundwork is needed?** (before scaling automation)
+
+This framework extracts operational intelligence from past incidents to identify maturity gaps before investing in specific automation platforms.
 
 ---
 
@@ -129,29 +131,29 @@ Remediation Opportunities:
 
 ---
 
-## ROI Quantification
+## Time Savings Quantification
 
 **Calculates**:
-- Manual effort (hours × oncall rate)
-- With automation (reduced hours × oncall rate)
-- Savings per incident
+- Current manual effort (hours per phase)
+- Potential with improvements (reduced hours)
+- Time saved per incident
 - Annual projection (if recurring)
 
 **Example**:
 ```
 Incident: DB CPU Saturation
-- Manual effort: 8.7 hours × $200/hour = $1,740
-- With automation: 0.7 hours × $200/hour = $140
-- Savings per incident: $1,600
-- Frequency: 1x per month
-- Annual savings: $19,200
+- Detection: 20h → 2 min (with DB CPU alert)
+- Diagnosis: 25h → 1h (with runbook)
+- Remediation: 4d 6h → 2h (with automated scaling)
+- Total time saved: ~4 days per incident
 ```
 
 **Batch analysis** (6 RCAs):
 ```
-Average TTD: 16.5h → 5 min (99.5% reduction)
-Average TTR: 33.7h → 2h (94% reduction)
-Annual ROI: $264K-529K/year
+Observable signals existed in 100% of incidents
+Detection delay was the largest bottleneck (75% had TTD >10h)
+10 specific missing alerts identified
+2 recurring patterns found (33% recurrence rate)
 ```
 
 ---
@@ -234,11 +236,11 @@ Runbook: runbooks/diagnosis/temporalhistory-capacity-exhaustion.md
 - Runbook coverage: ≥80% of recurring patterns have runbooks
 
 **Example results** (Temporal team, 6 RCAs):
-- TTD: 16.5h → 5 min (99.5% reduction potential)
-- TTR: 33.7h → 2h (94% reduction potential)
-- 4 runbook patterns identified
-- 10 missing alerts found
-- $264K-529K/year projected savings
+- Observable signals existed in 100% of incidents
+- Detection delay was the largest bottleneck (average: 16.5h)
+- 10 specific missing alerts identified
+- 2 recurring patterns found (33% recurrence rate)
+- 4 runbook candidates generated
 
 ---
 
@@ -261,11 +263,12 @@ Runbook: runbooks/diagnosis/temporalhistory-capacity-exhaustion.md
 
 ## Design Principles
 
-1. **Time-focused**: Every output ties to TTD/TTX/TTR reduction
-2. **Data-driven**: Quantify time savings, don't just suggest automation
-3. **Team-agnostic**: Works for any distributed system (Temporal, Kafka, etc.)
-4. **Safety-first**: Remediation automation includes preconditions + rollback
-5. **Actionable**: Every gap has a specific fix (alert name, metric, runbook pattern)
+1. **Operational maturity first**: Understand gaps before building automation
+2. **Signal-aware**: AI systems need quality observability and runbooks to be effective
+3. **Data-driven**: Extract patterns from real incidents, not theoretical scenarios
+4. **Team-agnostic**: Works for any distributed system (Temporal, Kafka, etc.)
+5. **Safety-first**: Human-in-loop for remediation, automation for detection and guidance
+6. **Actionable**: Every gap has a specific fix (alert name, metric, runbook pattern)
 
 ---
 

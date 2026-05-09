@@ -1,4 +1,4 @@
-# Temporal Incident Automation: Action Plan
+# Post-Incident Analysis Framework: Executive Action Plan
 
 **Date**: 2026-05-09 | **Analysis Period**: July 2025 - April 2026 | **RCAs Analyzed**: 6
 

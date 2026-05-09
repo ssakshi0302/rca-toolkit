@@ -1,4 +1,4 @@
-# RCA Toolkit - Executive Navigation Guide
+# Post-Incident Analysis Framework - Executive Navigation Guide
 
 **Purpose**: Quick links to key documents for different audiences
 
@@ -14,8 +14,7 @@
 - 6 incidents analyzed (table format)
 - 10 missing alerts (specific: DB CPU, memory pressure, OOMKilled, etc.)
 - 2 patterns identified (capacity exhaustion, WASM panic)
-- Time reduction: 99.5% TTD, 70-90% TTX, 94% TTR
-- ROI: **$264K-529K/year**
+- Time savings potential: 1,240 hours/year (71% reduction)
 - Automation roadmap (immediate/short/long)
 - Recommendation (approve what)
 
@@ -40,11 +39,11 @@
 **File**: `PURPOSE-AND-SCOPE.md`
 
 **What it contains**:
-- What toolkit does (identify automation opportunities)
-- TTD/TTX/TTR focus (reduce time to detect, diagnose, remediate)
+- What framework does (build operational maturity through incident analysis)
+- Detection, Diagnosis, Remediation focus
 - Use cases (post-incident, quarterly planning, runbook library)
 - Success metrics (Temporal team results)
-- Design principles (data-driven, team-agnostic, safety-first)
+- Design principles (operational maturity first, signal-aware, data-driven)
 
 **Time**: 10-15 minutes
 
@@ -66,20 +65,21 @@
 
 ---
 
-### 4. Toolkit Overview (main README)
+### 4. Framework Overview (main README)
 **File**: `README.md`
 
 **What it contains**:
-- What toolkit does (features, examples, use cases)
+- What framework does (operational maturity through incident analysis)
+- Vision and key learnings from Temporal pilot
+- Phased maturity model (observational → guided → automated)
 - Quick start (3 steps, 5-10 minutes)
 - Example outputs (what teams get)
-- ROI examples (Temporal: $264K-529K/year)
 
 **Time**: 10 minutes
 
 ---
 
-## For Teams Adopting Toolkit
+## For Teams Adopting Framework
 
 ### 5. Quick Start Guide
 **File**: `docs/quick-start.md`
@@ -114,9 +114,9 @@
 ### Best Path for Different Audiences
 
 **For Executives (10 minutes)**:
-1. Start with `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md`
-2. Highlight ROI: **$264K-529K/year**
-3. Show time reduction: 99.5% TTD, 94% TTR
+1. Start with `EXECUTIVE-SUMMARY.md` (1-page action plan)
+2. Highlight: 1,240 hours/year potential savings (71% reduction)
+3. Show operational gaps: 10 missing alerts, 2 recurring patterns
 4. Show 6 real incidents analyzed
 
 **For EMs / Tech Leads (20 minutes)**:
@@ -127,7 +127,7 @@
 5. Discuss adoption for their team
 
 **For Engineers / SREs (30 minutes)**:
-1. Start with `README.md` (toolkit overview)
+1. Start with `README.md` (framework overview)
 2. Walk through `docs/quick-start.md` (hands-on)
 3. Show Temporal team config (how to adapt)
 4. Show generated runbooks (actionable steps)
@@ -140,8 +140,9 @@
 ```
 rca-toolkit-draft/
 ├── EXECUTIVE-NAVIGATION.md              # This file (navigation guide)
-├── TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md  # 2-page exec summary ✅
-├── README.md                            # Toolkit overview
+├── EXECUTIVE-SUMMARY.md                 # 1-page action plan ✅
+├── TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md  # 4-page detailed analysis ✅
+├── README.md                            # Framework overview
 ├── PURPOSE-AND-SCOPE.md                 # Detailed purpose
 │
 ├── Examples
@@ -162,25 +163,27 @@ rca-toolkit-draft/
 ## Key Messages by Audience
 
 ### For Executives
-**Message**: "Automation can reduce incident response time by 90%+ with quantified ROI"
+**Message**: "Build operational maturity before scaling automation - understand the signals first"
 
 **Data points**:
-- $264K-529K/year savings (Temporal team, 6 incidents)
-- 99.5% TTD reduction (16.5h → 5 min with 10 alerts)
-- 94% TTR reduction (33.7h → 2h with automation)
+- 1,240 hours/year potential savings (Temporal team, 6 incidents)
+- 100% of incidents had observable signals - delays caused by missing alerting logic
+- Detection delay is the largest bottleneck (75% had TTD >10 hours)
+- 10 specific missing alerts identified
 - 2 patterns identified from just 6 RCAs
 - Team-agnostic (works for any distributed system)
 
 ---
 
 ### For Engineering Managers
-**Message**: "Toolkit identifies automation opportunities from existing RCAs"
+**Message**: "Framework identifies operational maturity gaps from existing RCAs"
 
 **Data points**:
 - 6 RCAs analyzed → 10 missing alerts found
 - Pattern detection (≥2 similar incidents)
 - Deterministic runbooks (step-by-step guidance)
-- Post-incident analysis (safe, not live automation)
+- Post-incident analysis (not live automation)
+- Phased approach: Observational insights → Guided assistance → Automated reasoning
 - 1-2 hour setup for teams
 
 ---
@@ -201,15 +204,15 @@ rca-toolkit-draft/
 
 ### Before Team Meeting
 **Send ahead**:
-1. `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md` (5-min read)
-2. Context: "We analyzed 6 Temporal incidents, found $264K-529K/year automation ROI"
+1. `EXECUTIVE-SUMMARY.md` (3-min read - 1-page action plan)
+2. Context: "Analyzed 6 Temporal incidents, found operational maturity gaps with 1,240 hours/year potential savings"
 
 ### During Demo (20-30 min)
 **Agenda**:
-1. Problem (5 min): Incidents recur, no pattern detection
-2. Solution (5 min): Toolkit analyzes RCAs, identifies automation
-3. Temporal Results (10 min): Show `EXAMPLE-OVERVIEW.md`, runbooks
-4. Next Steps (5 min): Pilot with 1-2 teams, then org-wide
+1. Problem (5 min): Incidents recur, operational gaps not systematically identified
+2. Solution (5 min): Framework analyzes RCAs, identifies maturity gaps
+3. Temporal Results (10 min): Show `EXAMPLE-OVERVIEW.md`, runbooks, key learnings
+4. Next Steps (5 min): Phased approach, pilot with 1-2 teams
 5. Q&A (5 min)
 
 ### After Meeting
@@ -232,22 +235,23 @@ A: 5-10 minutes for quick start, 1-2 hours for comprehensive setup.
 A: No. Start with 10-20 key metrics. Add more as you analyze RCAs.
 
 **Q: What if we don't use Argus/Splunk?**
-A: Toolkit is tool-agnostic. Use Prometheus, Elasticsearch, whatever you have.
+A: Framework is tool-agnostic. Use Prometheus, Elasticsearch, whatever you have.
 
 **Q: How many RCAs needed to see patterns?**
 A: Temporal found 2 patterns from 6 RCAs. Start with 5-10 for meaningful analysis.
 
 **Q: Is remediation automation safe?**
-A: Toolkit identifies candidates with safety checks. Teams decide what to automate.
+A: Framework identifies candidates with safety checks. Teams decide what to automate. Phase 1 focuses on detection and diagnosis only.
 
 ---
 
 ## Next Steps
 
 ### For Approval
-1. Review `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md`
-2. Validate ROI calculation methodology
-3. Approve repository creation + pilot teams
+1. Review `EXECUTIVE-SUMMARY.md` (1-page action plan)
+2. Review `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md` (detailed 4-page analysis)
+3. Validate time savings methodology
+4. Approve repository creation + pilot teams
 
 ### For Pilot
 1. Identify 1-2 pilot teams (Kafka? Heroku?)
@@ -264,5 +268,5 @@ A: Toolkit identifies candidates with safety checks. Teams decide what to automa
 ---
 
 **Repository Status**: Ready for creation  
-**Recommendation**: Create `git.soma.salesforce.com/orcaas/rca-toolkit`  
+**Recommendation**: Create `git.soma.salesforce.com/orcaas/post-incident-analysis-framework`  
 **Access**: Private, org-level (all Salesforce teams)
