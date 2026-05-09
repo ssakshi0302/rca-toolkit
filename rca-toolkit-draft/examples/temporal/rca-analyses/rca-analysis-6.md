@@ -578,8 +578,6 @@ History service pods experienced memory exhaustion and OOMKills due to workflow 
 
 ---
 
-## Recommendations for Platform Evaluation
-
 ### Detection Capabilities Required
 
 **Must-Have:**
@@ -678,30 +676,6 @@ History service pods experienced memory exhaustion and OOMKills due to workflow 
 **Automation Potential**: VERY HIGH (detection, diagnosis, resolution all automatable)
 
 ---
-
-## Follow-Up Actions for Platform Evaluation
-
-### Questions to Ask Platforms
-
-1. **Detection**:
-   - How quickly can your platform detect DB CPU saturation + memory pressure simultaneously?
-   - Do you support custom composite alerts (e.g., "DB CPU >90% AND pod memory >80%")?
-   - What is your alert delivery SLA (monitoring signal → engineer notification)?
-
-2. **Diagnosis**:
-   - Can you auto-correlate K8s events, application metrics, DB metrics, and workflow metrics in one view?
-   - Do you support namespace-level analysis for multi-tenant environments?
-   - Can you detect anomalous workflow submission patterns automatically?
-
-3. **Resolution**:
-   - Do you support HPA based on memory (not just CPU)?
-   - Can you auto-route read-only queries to DB replicas?
-   - Do you have pre-approved runbooks for common resource exhaustion scenarios?
-
-4. **Prevention**:
-   - Can you generate proactive capacity reports with scaling recommendations?
-   - Do you support periodic load testing with automated threshold tuning?
-   - Can you detect gradual degradation (e.g., baseline memory creeping from 60% → 80%)?
 
 ### Test Scenarios to Run
 

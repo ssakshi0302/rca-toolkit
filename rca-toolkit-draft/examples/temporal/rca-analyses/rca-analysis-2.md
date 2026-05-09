@@ -165,15 +165,6 @@
    - Phase: Diagnosis
    - Why not automatable: Understanding WHY pods registered with stale/incorrect mesh endpoints requires reproducing the race condition in lower environments and examining Istio control plane logs. This is deep troubleshooting, not automatable triage.
 
-### Platform Requirements
-Based on this incident, an automation platform must:
-- **Detect mesh routing failures immediately** by monitoring PassthroughCluster traffic, Envoy upstream cluster health, and endpoint staleness (not just pod health)
-- **Correlate release events with error spikes** within minutes, flagging "errors started 7 minutes after release" as high-priority release-induced issues
-- **Track pod lifecycle events at sub-minute granularity** (creation, rescheduling, readiness) and correlate unexpected events (2 pods rescheduled during release) with error patterns
-- **Surface historical incident patterns** (GIA2H Dec 2025 similarity) to accelerate diagnosis by showing "we've seen this before, here's what worked"
-- **Integrate mesh health into standard dashboards** so service owners don't need to discover hidden Mesh Debug Dashboards during incidents
-- **Auto-generate low-risk remediation actions** (rolling restart MO) with one-click approval workflow to reduce resolution overhead
-
 ### Key Takeaways
 1. **"Healthy pods" are insufficient**: Kubernetes health checks (Running, 0 restarts) passed while Istio mesh routing was broken. Automation must monitor mesh-level health independently of pod-level health.
 2. **Mesh routing is a blind spot**: PassthroughCluster traffic went undetected for 24 hours because it wasn't in standard monitoring. Adding mesh health panels to service-owner dashboards would have saved ~13 hours of diagnosis time.

@@ -170,31 +170,6 @@
 - Generalize: Any task type (archival, replication, workflow execution) can exhibit this
 - Solution: Generic retry storm detector that works across task types
 
-### Platform Requirements
-
-**Detection capabilities needed**:
-1. **Multi-metric anomaly detection**: Combine queue depth, success rate, throttle rate into single "archival health" signal
-2. **Trend analysis**: Detect "queue not draining" pattern (depth increasing over hours)
-3. **Rate limiting awareness**: Understand namespace/service quotas and alert on approaching limits
-4. **Historical baseline**: Know what "normal" archival throughput looks like for a namespace
-
-**Diagnosis capabilities needed**:
-1. **Root cause inference**: Given symptoms (high retry rate, throttle rate), infer "retry storm exhausting quota"
-2. **Resource utilization view**: Show how archival tasks are consuming namespace persistence budget
-3. **Impact projection**: "At current rate, backlog will take X days to drain"
-
-**Remediation capabilities needed** (future phase):
-1. **Quota increase recommendation**: Calculate required quota to meet SLA
-2. **Circuit breaker control**: Pause/resume archival tasks dynamically
-3. **Throttling control**: Limit archival task rate to stay within quota
-4. **Rollback capability**: Disable archival if it's causing problems
-
-**Integration requirements**:
-- Access to namespace-level metrics: throttle rate, task queue depths, success/failure rates
-- Access to quota/rate limit configuration: What is the persistence limit for this namespace?
-- Access to archival service logs: What errors are tasks hitting?
-- Ability to correlate timing: When was archival enabled? When did backlog start?
-
 ### Key Takeaways
 
 1. **3-day detection gap is the killer**: By the time humans noticed, the problem had compounded 3x (4.5M → 15M). Fast detection (<1 hour) would have prevented retry storm amplification.

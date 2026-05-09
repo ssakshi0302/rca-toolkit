@@ -227,43 +227,6 @@
 - Automation could suggest this, but human should approve
 - True fix requires platform team to resolve node join issue
 
-### Platform Requirements
-
-**Detection capabilities needed**:
-1. **K8s deployment health monitoring**: Track rollout progress, detect stalls
-2. **Pod scheduling failure analysis**: Parse pod events, extract reason (TSC, resources, etc.)
-3. **Autoscaler integration**: Monitor Karpenter/cluster autoscaler success/failure
-4. **Node lifecycle monitoring**: Track node provisioning → Ready state transition
-5. **Cross-layer correlation**: Connect pod Pending → node provisioning → kubelet failures
-
-**Diagnosis capabilities needed**:
-1. **Multi-layer failure visualization**: Show full stack:
-   - Deployment status (rollout progress)
-   - Pod status (Pending + reason)
-   - Node status (provisioning + join failures)
-   - Autoscaler status (Karpenter errors)
-2. **TSC constraint analyzer**: Given TSC policy + cluster topology, determine if constraint can be satisfied
-3. **Historical correlation**: Has this deployment failed before? Recent platform changes?
-4. **Runbook integration**: Link to "node join failure troubleshooting" runbook
-
-**Remediation capabilities needed** (future phase):
-1. **TSC softening recommendation**: Suggest safe configuration changes
-2. **Platform team escalation**: Auto-create ticket with platform team with full context
-3. **Rollback capability**: If deployment stalls >X minutes, suggest rollback option
-4. **Manual intervention guidance**: Provide step-by-step commands for operators
-
-**Integration requirements**:
-- Access to K8s API: deployments, pods, nodes, events
-- Access to Karpenter controller logs/metrics
-- Access to node kubelet logs (may require platform team integration)
-- Understanding of cluster topology (zones, node labels)
-- Historical deployment data (success/failure rates)
-
-**Challenges**:
-- Platform-level failures (node join) may be outside application team's observability
-- Requires coordination between application monitoring and platform monitoring
-- May need platform team to expose additional metrics/logs
-
 ### Key Takeaways
 
 1. **Timeline data is critical**: Without timestamps, cannot measure TTD/TTR or identify bottlenecks. This RCA's lack of timeline shows documentation quality varies - standardized RCA templates needed.

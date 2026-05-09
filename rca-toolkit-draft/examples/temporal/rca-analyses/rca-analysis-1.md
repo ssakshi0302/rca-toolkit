@@ -147,15 +147,6 @@
    - Phase: Resolution
    - Why low value for automation: These are process/hygiene issues that slow down resolution but don't directly increase TTR. Automation would be build-time CI/CD checks, not incident-time.
 
-### Platform Requirements
-Based on this incident, an automation platform must:
-- **Detect 20-hour silent failures** by monitoring resource utilization at the infrastructure layer (DB CPU, container memory) before downstream service symptoms appear
-- **Correlate cross-layer signals** (DB saturation → service errors → sidecar OOM → pod crashes) and present causation chain, not just isolated symptoms
-- **Detect namespace-level anomalies** (workers with unique task queues generating 10x normal poll volume) and flag outlier namespaces immediately
-- **Validate monitoring correctness** (pod status across K8s API vs Grafana vs container runtime) to prevent misleading data from delaying diagnosis
-- **Surface historical patterns** ("This looks like PRB-XXXXX from 3 months ago") using RCA corpus similarity matching
-- **Auto-generate remediation options** with cost/time/risk estimates (scale DB, apply rate limiting, rolling restart) to accelerate mitigation decisions
-
 ### Key Takeaways
 1. **Infrastructure monitoring gaps are critical**: 20-hour detection delay was entirely due to lack of DB CPU alerting. Downstream service availability alerts are insufficient for detecting infrastructure bottlenecks.
 2. **Monitoring correctness matters as much as coverage**: Misleading pod status and cluster-agnostic alert queries cost 8+ hours of diagnosis time. Automation must validate monitoring data consistency.

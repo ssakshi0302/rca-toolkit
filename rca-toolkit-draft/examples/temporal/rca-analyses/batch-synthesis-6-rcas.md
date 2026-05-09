@@ -265,9 +265,9 @@
 
 5. **Implement recurring alert tracking** (RCA #5): Dashboard showing "alerts that fired >X times in past week" to surface patterns.
 
-### Platform Evaluation Criteria (Reinforced by 6 RCAs)
+### Operational Requirements (Reinforced by 6 RCAs)
 
-**Must-Have (P0)**:
+**Critical (P0)**:
 1. Multi-layer observability (app + DB + container + mesh + WASM) - RCA #5, #6 show gaps at every layer
 2. Proactive resource monitoring (memory, CPU, disk) with trend analysis - RCA #6 baseline 60-80% for days
 3. Cross-system correlation (Splunk + Argus + Grafana + K8s events) - All 6 RCAs required manual correlation
@@ -276,7 +276,7 @@
 **High Priority (P1)**:
 1. Historical pattern matching - RCA #2 recurred from Dec 2025; RCA #6 similar to RCA #1
 2. Client-side protection (rate limiting, circuit breakers) - RCA #6 calls this out as prevention mechanism
-3. Auto-remediation with guardrails - RCA #5 (rolling restart), RCA #6 (resource scaling)
+3. Guided remediation with guardrails - RCA #5 (rolling restart), RCA #6 (resource scaling)
 
 **Nice-to-Have (P2)**:
 1. WASM/sidecar observability - RCA #5 introduces new failure domain
@@ -286,20 +286,18 @@
 
 - RCA #5 and #6 are highest quality RCAs analyzed (comprehensive timelines, 5-whys, GUS work items, clear action items)
 - RCA #4 remains outlier (no timeline data) - suggests need for standardized RCA template
-- All 6 RCAs now have extractable metrics for platform testing
 
 ---
 
 ## Next Steps
 
-1. **Update executive report** with 6-RCA data (preserve structure, update metrics)
+1. **Update operational findings** with 6-RCA data (preserve structure, update metrics)
 2. **Update metrics catalog** with RCA #5, #6 additions
 3. **Create/update runbooks**:
    - DB CPU + Memory Exhaustion diagnosis runbook
    - Service Mesh Routing Failures diagnosis runbook
    - Rolling Restart remediation runbook
    - DB + Service Resource Scaling remediation runbook
-4. **Test platforms against RCA #5, #6**: Can Matrix/Warden detect WASM panics? Memory pressure trends?
 
 ---
 
