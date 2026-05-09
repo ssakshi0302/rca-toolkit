@@ -7,7 +7,7 @@
 ## Executive Summary
 
 **Detection is the bottleneck**: 75% of incidents had TTD >10 hours (range: 29 min - 3 days)  
-**Automation impact**: 50-95% TTD reduction, 40-70% faster diagnosis, 30-40% auto-resolution potential  
+**Opportunity**: Significant reduction potential through improved alerting, signal correlation, and automation  
 **Time savings**: 1,240 hours/year potential savings, 71% reduction in incident time
 
 ---
@@ -38,7 +38,7 @@
 - Monitoring blind spots (PassthroughCluster traffic, mesh routing, OOMKilled events)
 - Platform failures hidden (Karpenter node join failures)
 
-**Impact**: 50-95% TTD reduction with infrastructure monitoring
+**Opportunity**: Substantial TTD reduction with infrastructure monitoring and proactive alerting
 
 ---
 
@@ -55,7 +55,7 @@
 - Incomplete dashboards (PassthroughCluster not visible, pod status misleading)
 - Noisy logs, difficult to find FIT tests/dashboards
 
-**Impact**: 40-70% faster diagnosis with automated signal correlation
+**Opportunity**: Faster diagnosis with automated signal correlation and historical pattern matching
 
 ---
 
@@ -74,7 +74,7 @@
 - **No CAR prioritization process across RCAs** - CARs treated independently per incident, not prioritized by recurrence risk
 - CARs often deprioritized vs feature work
 
-**Impact**: 50-80% faster diagnosis with historical pattern matching + CAR prioritization process
+**Opportunity**: Faster diagnosis with historical pattern matching and systematic CAR prioritization
 
 ---
 
@@ -90,7 +90,7 @@
 - Manual approval processes (RAR, MO, peer review)
 - No pre-flight validation
 
-**Impact**: 30-40% auto-resolved (low-risk actions), 60-70% faster guided remediation
+**Opportunity**: Accelerated remediation through automation of low-risk actions with safety guardrails
 
 ---
 
@@ -251,13 +251,19 @@
 
 ## Recommendations
 
-**Approve**:
-1. **Implement 10 missing alerts** (detection) → **92% TTD reduction**
-2. **Create 4 runbooks** (diagnosis) → **70% TTX reduction**
-3. **Implement CAR prioritization process** (prevent recurrence) → **30-50% fewer recurring incidents**
-4. **Pilot 3 automation candidates** (remediation) → **60% TTR reduction**
+**Framework Observations**:
+1. **10 missing alerts identified** across detection gaps (DB CPU, memory pressure, OOMKilled events, queue depth)
+2. **2 recurring patterns found** suitable for runbook generation (capacity exhaustion, mesh routing)
+3. **CAR tracking gap identified** - incidents recur before CARs are prioritized and fixed
+4. **3 automation candidates** identified with safety assessment needed (HPA, config validation, graceful timeout)
 
-**Expected impact**: 71% reduction in incident time, 1,240 hours/year saved, prevent recurring incidents
+**Engineering Recommendations**:
+1. Implement missing alerts (immediate - 30 days)
+2. Create diagnosis runbooks for recurring patterns (short-term - 60-90 days)
+3. Establish CAR prioritization process across RCAs (immediate - 30 days)
+4. Pilot automation for low-risk, high-frequency remediations with safety guardrails (short-term - 60-90 days)
+
+**Expected impact**: Preliminary analysis indicates substantial reduction in incident time (estimated ~1,240 hours/year), prevention of recurring incidents through systematic CAR prioritization
 
 **Risk**: Low (post-incident analysis, safe automation with rollback plans)
 
@@ -304,12 +310,12 @@
 
 ### Time Savings Estimate
 
-| Phase | Current Avg | Target | Reduction | Annual Time Saved* |
-|-------|-------------|--------|-----------|-------------------|
-| **Detection (TTD)** | 16.5h | 2h | 92% | ~600 hours |
-| **Diagnosis (TTX)** | 13.3h | 4h | 70% | ~240 hours |
-| **Resolution (TTR)** | 33.7h | 20h | 60% | ~400 hours |
-| **Total** | 63.5h/incident | 26h/incident | **71%** | **~1,240 hours/year** |
+| Phase | Current Avg | Estimated Target | Annual Time Saved* |
+|-------|-------------|------------------|-------------------|
+| **Detection (TTD)** | 16.5h | <2h | ~600 hours |
+| **Diagnosis (TTX)** | 13.3h | ~4h | ~240 hours |
+| **Resolution (TTR)** | 33.7h | ~20h | ~400 hours |
+| **Total** | 63.5h/incident | ~26h/incident | **~1,240 hours/year** |
 
 **\*Assumes 25 incidents/year** (conservative based on PD alert frequency)
 

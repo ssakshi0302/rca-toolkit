@@ -9,9 +9,17 @@
 
 ## Overview
 
-Temporal incidents already contain meaningful operational patterns. This framework extracts those patterns to identify operational maturity gaps before investing in specific AIOps or agentic automation platforms.
+Temporal incidents already contain meaningful operational patterns. This framework systematically analyzes historical RCAs to identify operational maturity gaps across detection, diagnosis, and remediation.
 
-**Core principle**: AI systems are only as effective as the operational signals, observability, and runbook quality available to them.
+**Core principle**: Before scaling automation, understand the operational foundation. AI and agentic systems are only as effective as the signals, observability, alerts, and runbooks available to them.
+
+Most operational delays are caused by:
+- Missing detection logic (signals exist, alerts don't)
+- Incomplete runbooks (knowledge exists in people, not systems)
+- Manual correlation (cross-system signal interpretation)
+- Untracked recurring patterns (same failures, repeated investigations)
+
+This framework extracts operational intelligence from past incidents to identify these gaps before investing in automation platforms.
 
 ---
 
@@ -167,6 +175,25 @@ Rather than immediately adopting an AIOps platform, we systematically analyze pa
 - Observable signals not monitored
 - CAR prioritization by recurrence risk
 - Historical pattern matching for future incidents
+
+### Operational Flow
+
+```
+Incident / RCA
+      ↓
+Pattern Extraction
+      ↓
+Gap Identification
+(metrics / alerts / runbooks)
+      ↓
+Operational Insights
+      ↓
+Automation Opportunities
+```
+
+**Framework Observations** → **Engineering Recommendations** → **Operational Follow-Ups**
+
+The framework provides pattern extraction and gap analysis. Engineering judgment determines prioritization, safety assessment, and implementation strategy.
 
 ---
 

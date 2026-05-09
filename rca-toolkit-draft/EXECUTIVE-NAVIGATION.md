@@ -6,17 +6,18 @@
 
 ## For Executives & Leadership
 
-### 1. Executive Summary (1-page read) ⭐ START HERE
+### 1. Executive Action Plan (1-page read) ⭐ **PRIMARY DOCUMENT**
 **File**: `EXECUTIVE-SUMMARY.md`
+
+**This is the recommended document for leadership review, Slack sharing, and architectural discussions.**
 
 **What it contains**:
 - Problem (clear, concise)
 - 6 incidents analyzed (table format)
-- 10 missing alerts (specific: DB CPU, memory pressure, OOMKilled, etc.)
-- 2 patterns identified (capacity exhaustion, WASM panic)
-- Time savings potential: 1,240 hours/year (71% reduction)
-- Automation roadmap (immediate/short/long)
-- Recommendation (approve what)
+- Framework observations (10 missing alerts, 2 recurring patterns)
+- Engineering recommendations (with implementation timeline)
+- Time savings potential: ~1,240 hours/year estimated
+- Phased roadmap (immediate/short/long)
 
 **Time**: 3-5 minutes
 

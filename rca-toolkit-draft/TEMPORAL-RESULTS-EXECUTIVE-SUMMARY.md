@@ -10,7 +10,7 @@
 
 - Detection is the largest bottleneck: 67% of incidents had TTD >10 hours (range: 1 min - 3 days)
 - 100% of incidents had observable signals in existing systems; delays caused by missing alerting logic
-- Automation could reduce TTD by 97%, diagnosis time by 68%, and TTR by 64%
+- Preliminary analysis indicates significant opportunity to reduce operational delays through improved alerting, signal correlation, and automation
 - Estimated impact: 1,764 hours saved annually (74% reduction in total incident time)
 
 ---
@@ -50,7 +50,7 @@
 - Monitoring blind spots (PassthroughCluster traffic, WASM panics, mesh routing)
 - Platform-level failures hidden from application monitoring (node join failures)
 
-**Automation Impact**: 97% TTD reduction achievable with proactive resource monitoring, OOMKill detection, and recurring alert tracking
+**Potential Impact**: Significant TTD reduction achievable with proactive resource monitoring, OOMKill detection, and recurring alert tracking
 
 ---
 
@@ -166,7 +166,7 @@
 
 | Phase | Current Avg | With Automation | Reduction | Incidents Affected | Annual Time Saved* |
 |-------|-------------|-----------------|-----------|--------------------|--------------------|
-| **Detection (TTD)** | 16.5h | 0.5h | **97%** | 4/6 (67%) | ~640 hours |
+| **Detection (TTD)** | 16.5h | <1h | **Significant** | 4/6 (67%) | ~640 hours |
 | **Diagnosis** | 9.4h | 3h | **68%** | 6/6 (100%) | ~256 hours |
 | **Resolution (TTR)** | 33.7h | 12h | **64%** | 4/6 (67%) | ~868 hours |
 | **Total** | **59.6h/incident** | **15.5h/incident** | **74%** | - | **~1,764 hours/year** |
@@ -174,7 +174,7 @@
 *Assumes 40 incidents/year (revised based on 6 RCAs over 8-month period + PD alert data)
 
 ### Business Impact
-- **Reduced customer impact**: Faster detection = shorter outages (97% TTD reduction)
+- **Reduced customer impact**: Faster detection = shorter outages
 - **Reduced oncall burden**: Auto-triage + guided remediation = 74% less manual work
 - **Prevented incidents**: Pre-flight validation + pattern matching = avoid RCA #3, #6-type incidents
 - **Team capacity**: 1,764 hours/year freed for feature work and proactive improvements
