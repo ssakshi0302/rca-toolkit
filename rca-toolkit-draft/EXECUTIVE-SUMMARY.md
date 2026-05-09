@@ -8,7 +8,7 @@
 
 **Detection is the bottleneck**: 75% of incidents had TTD >10 hours (range: 29 min - 3 days)  
 **Automation impact**: 50-95% TTD reduction, 40-70% faster diagnosis, 30-40% auto-resolution potential  
-**ROI**: $264K-529K/year (1,240 hours saved, 71% reduction in incident time)
+**Time savings**: 1,240 hours/year potential savings, 71% reduction in incident time
 
 ---
 
@@ -257,7 +257,7 @@
 3. **Implement CAR prioritization process** (prevent recurrence) → **30-50% fewer recurring incidents**
 4. **Pilot 3 automation candidates** (remediation) → **60% TTR reduction**
 
-**Expected impact**: $264K-529K/year savings, 71% reduction in incident time, prevent recurring incidents
+**Expected impact**: 71% reduction in incident time, 1,240 hours/year saved, prevent recurring incidents
 
 **Risk**: Low (post-incident analysis, safe automation with rollback plans)
 
@@ -302,7 +302,7 @@
 
 ---
 
-### ROI Estimate
+### Time Savings Estimate
 
 | Phase | Current Avg | Target | Reduction | Annual Time Saved* |
 |-------|-------------|--------|-----------|-------------------|
@@ -317,7 +317,7 @@
 - Reduced customer impact: Faster detection = shorter outages
 - Reduced oncall burden: Auto-triage + guided remediation
 - Prevented incidents: Pre-flight validation + pattern matching
-- **Cost savings**: 1,240 hours/year @ $200-400/hour = **$264K-529K/year**
+- Team capacity: 1,240 hours/year freed for feature work and proactive improvements
 
 ---
 

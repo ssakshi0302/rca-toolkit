@@ -9,7 +9,7 @@
 
 ## Quick Links
 
-**For Executives**: See `EXECUTIVE-SUMMARY.md` - **1-page summary** with **$264K-529K/year ROI** from 6 Temporal incidents
+**For Executives**: See `EXECUTIVE-SUMMARY.md` - **1-page summary** showing 71% incident time reduction from 6 Temporal incidents
 
 **For Detailed Results**: See `TEMPORAL-RESULTS-EXECUTIVE-SUMMARY.md` - Full 4-page analysis
 
@@ -24,7 +24,7 @@
 **Analyzes incident RCAs** from Google Docs to:
 1. **Identify where time is spent** - Extract TTD, TTX, TTR from incident timeline
 2. **Find automation opportunities** - Detect gaps in detection, diagnosis, remediation
-3. **Quantify ROI** - Calculate time savings from automation
+3. **Quantify impact** - Calculate time savings from automation
 4. **Generate runbooks** - Create deterministic runbooks for recurring patterns (≥2 incidents)
 
 **Goal**: Reduce manual incident response time through data-driven automation identification.
@@ -96,10 +96,10 @@ cp templates/config/team-config-example.yaml .claude/config/myteam-config.yaml
 - Identifies recurring patterns (same service + symptom + root cause)
 - Generates deterministic runbooks for patterns
 
-### ROI Calculation
-- Manual effort (hours × oncall rate)
-- With automation (reduced hours × oncall rate)
-- Savings per incident
+### Time Savings Calculation
+- Manual effort (hours per incident)
+- With automation (reduced hours per incident)
+- Time saved per incident
 - Annual projection (if recurring)
 
 ---
@@ -162,7 +162,7 @@ cp templates/config/team-config-example.yaml .claude/config/myteam-config.yaml
 │  └─ runbooks/diagnosis/temporalfrontend-mesh-routing-failure.md
 ├─ Average TTD: 16.5 hours (range: 29 min - 10 days)
 ├─ Average TTR: 33.7 hours (range: 30 min - 10 days)
-└─ Estimated ROI: $264K-529K/year (74-90% time reduction)
+└─ Estimated impact: 1,240 hours/year saved (74-90% time reduction)
 ```
 
 ---
@@ -183,13 +183,13 @@ cp templates/config/team-config-example.yaml .claude/config/myteam-config.yaml
 
 ### 2. Quarterly Automation Planning
 **When**: Planning automation roadmap  
-**Goal**: Find highest-ROI automation opportunities
+**Goal**: Find highest-impact automation opportunities
 
 ```bash
 /rca-analyzer --batch <last-quarter-rcas>
 ```
 
-**Output**: Recurring patterns + ROI estimates + runbook templates
+**Output**: Recurring patterns + time savings estimates + runbook templates
 
 ---
 
@@ -285,7 +285,7 @@ your-project/
 **6 RCAs analyzed** (prod incidents):
 - Average TTD: 16.5 hours → Target: 5 minutes (99.5% reduction)
 - Average TTR: 33.7 hours → Target: 2 hours (94% reduction)
-- ROI: $264K-529K/year from automation
+- Time savings: 1,240 hours/year from automation
 - 4 runbook patterns identified
 
 **Automation opportunities found**:

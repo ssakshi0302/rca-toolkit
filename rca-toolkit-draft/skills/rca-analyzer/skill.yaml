@@ -162,6 +162,29 @@ You are analyzing an incident RCA from a Google Doc.
 - **Diagnosis Complete**: <timestamp> (TTX: <duration from detection>)
 - **Resolution**: <timestamp> (TTR: <total duration from start>)
 
+### ICC/Communication Analysis (if applicable)
+
+**ICC Channel**: <#icc-XXXXXXXX or N/A>
+**Timeline**:
+- ICC opened: <timestamp> (delay from incident start: <duration>)
+- Resolution: <timestamp>
+- Total duration: <duration>
+
+**Communication Delays** (if any):
+- Severity assessment delay: <e.g., "Started Sev4, upgraded to Sev3 after 30h">
+- Multi-team coordination delays: <e.g., "RAR approvals took 24h">
+- Investigation handoffs: <e.g., "Started in oncall channel, ICC created 26h later">
+
+**Communication Patterns**:
+- Status update frequency: <e.g., "Every 12-24h" or "Real-time">
+- Manual checks: <e.g., "Repeated dashboard/pod/metric checks across team members">
+- False positives: <e.g., "Cluster routing confusion (2011 vs 2031)">
+
+**Automation Opportunities**:
+- Auto-triage severity based on symptoms
+- Pre-gather context (dashboards, logs, similar incidents)
+- Auto-generate status updates
+
 ### Root Cause
 **Category**: <db_saturation | mesh_failure | capacity_exhaustion | archival_backlog | config_issue | deployment_issue>
 **Service**: <primary affected service>
@@ -174,6 +197,16 @@ You are analyzing an incident RCA from a Google Doc.
 **Contributing Factors**:
 - <factor 1>
 - <factor 2>
+
+**CARs (Corrective Action Requests)**:
+- <CAR-XXXXX>: <description> (Status: <open/closed>, Created: <date>)
+- <CAR-YYYYY>: <description> (Status: <open/closed>, Created: <date>)
+
+**CAR Analysis**:
+- Total CARs: <count>
+- Open CARs: <count>
+- Related to recurring patterns: <Yes/No - which pattern>
+- Recurrence risk: <High/Medium/Low> (based on: pattern frequency, CAR age, severity)
 
 ### What Worked Well
 

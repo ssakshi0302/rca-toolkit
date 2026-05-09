@@ -11,7 +11,7 @@
 - Detection is the largest bottleneck: 67% of incidents had TTD >10 hours (range: 1 min - 3 days)
 - 100% of incidents had observable signals in existing systems; delays caused by missing alerting logic
 - Automation could reduce TTD by 97%, diagnosis time by 68%, and TTR by 64%
-- Estimated ROI: 1,764 hours saved annually (74% reduction in total incident time, $264-529K/year)
+- Estimated impact: 1,764 hours saved annually (74% reduction in total incident time)
 
 ---
 
@@ -162,7 +162,7 @@
 
 ---
 
-## Automation ROI Estimate
+## Automation Time Savings Estimate
 
 | Phase | Current Avg | With Automation | Reduction | Incidents Affected | Annual Time Saved* |
 |-------|-------------|-----------------|-----------|--------------------|--------------------|
@@ -177,10 +177,7 @@
 - **Reduced customer impact**: Faster detection = shorter outages (97% TTD reduction)
 - **Reduced oncall burden**: Auto-triage + guided remediation = 74% less manual work
 - **Prevented incidents**: Pre-flight validation + pattern matching = avoid RCA #3, #6-type incidents
-- **Cost savings**: 
-  - Conservative: **$264K/year** (@ $150/hour)
-  - Moderate: **$353K/year** (@ $200/hour SRE rate)
-  - Optimistic: **$529K/year** (@ $300/hour fully-loaded cost)
+- **Team capacity**: 1,764 hours/year freed for feature work and proactive improvements
 
 **Confidence Level**: High (6 RCAs validate patterns: detection gaps, manual correlation, approval delays)
 
