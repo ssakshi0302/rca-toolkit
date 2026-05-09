@@ -2,7 +2,6 @@
 name: rca-analyzer
 description: Analyze incident RCAs to identify automation opportunities and reduce TTD, TTX, TTR
 version: 1.0
-author: Sakshi Mehrotra (OrcaaS)
 ---
 
 # RCA Analyzer Skill

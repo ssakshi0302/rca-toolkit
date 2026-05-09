@@ -408,7 +408,6 @@ runbook_patterns:
 **Questions**:
 - Slack: #rca-automation (internal)
 - GitHub Issues: git.soma.salesforce.com/orcaas/rca-toolkit/issues
-- Owner: Sakshi Mehrotra (OrcaaS)
 
 ---
 

@@ -430,5 +430,4 @@ See: `rca-toolkit-draft/EXECUTIVE-SUMMARY.md`
 ---
 
 **Last Updated**: 2026-05-09  
-**Owner**: Sakshi Mehrotra (OrcaaS)  
 **Status**: Production-ready

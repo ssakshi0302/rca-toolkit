@@ -339,7 +339,6 @@ environments:
 
 ## License & Ownership
 
-**Owner**: Sakshi Mehrotra (OrcaaS)  
 **Maintainers**: OrcaaS Temporal team  
 **Access**: Private, org-level (all Salesforce teams)  
 **Repository**: `git.soma.salesforce.com/orcaas/post-incident-analysis-framework`
@@ -349,8 +348,7 @@ environments:
 ## Getting Help
 
 **Issues**: Create issue in this repository  
-**Questions**: Slack #temporal-reliability (or your team channel)  
-**Owner**: Sakshi Mehrotra (OrcaaS)
+**Questions**: Slack #temporal-reliability (or your team channel)
 
 ---
 
