@@ -243,13 +243,15 @@ cp templates/config/team-config-example.yaml .claude/config/myteam-config.yaml
 post-incident-analysis-framework/
 ├── README.md                    # This file
 ├── OPERATIONAL-FINDINGS.md      # Temporal team analysis results
-├── skills/rca-analyzer/         # Analysis framework
+├── skills/rca-analyzer/         # Analysis framework (<500 lines)
 ├── templates/
 │   ├── runbook/                 # Diagnosis/remediation templates
 │   └── config/                  # Team configuration
 ├── docs/
 │   ├── quick-start.md           # Setup guide
-│   └── team-onboarding.md       # Comprehensive onboarding
+│   ├── team-onboarding.md       # Comprehensive onboarding
+│   ├── agent-architecture.md    # Parallel processing with Agents
+│   └── output-format-spec.md    # Standard output format
 └── examples/
     └── temporal/                # Complete Temporal pilot (6 RCAs)
         ├── EXAMPLE-OVERVIEW.md  # Workflow walkthrough
@@ -305,14 +307,23 @@ environments:
 - Config-driven (teams provide operational knowledge)
 - Modular (single RCA analysis, batch processing, pattern detection)
 - Deterministic (reproducible results, clear reasoning)
+- **Agent-based parallel processing** (batch mode spawns independent agents)
 
 **Components**:
 - RCA extraction (Google Docs → structured data)
 - Gap analysis (detection, diagnosis, remediation)
 - Pattern detection (≥2 similar incidents → runbook)
 - CAR tracking (prioritization by recurrence risk)
+- **Parallel orchestration** (Agent tool for concurrent RCA processing)
+
+**Performance**:
+- Single RCA: ~3-5 minutes
+- Batch (6 RCAs): ~5-6 minutes (parallel) vs ~18 minutes (sequential)
+- **3-4x speedup** with agent-based parallelization
 
 **Size**: Core framework <500 lines
+
+**See**: `docs/agent-architecture.md` for parallel processing details
 
 ---
 
