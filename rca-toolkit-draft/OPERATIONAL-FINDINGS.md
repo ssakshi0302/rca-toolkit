@@ -57,7 +57,6 @@
 
 **Manual correlation**:
 - 100% of incidents required correlating multiple metrics across different dashboards (Argus, Grafana), Splunk logs for different services, and DB metrics
-- Time spent: 1-14 hours per incident
 - Correlation logic exists in engineers' heads, not in tooling
 - Each incident requires jumping between service dashboards, log systems, DB metrics, K8s events, and mesh dashboards to establish causation
 
